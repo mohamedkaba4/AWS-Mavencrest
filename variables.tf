@@ -20,6 +20,11 @@ variable "instance_type" {
   description = "The EC2 instance type"
 }
 
+variable "bucket_name" {
+  type        = string
+  description = "The globally unique name of the S3 bucket storing images."
+}
+
 variable "ami_id" {
   type        = string
   description = "The custom AMI ID with Next.js and Nginx pre-installed"

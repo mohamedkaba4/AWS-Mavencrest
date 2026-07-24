@@ -16,20 +16,44 @@ resource "aws_launch_template" "app_lt" {
               #!/bin/bash
               sudo systemctl start nginx
               cd /home/ec2-user/E-commerce
-      
+      	      sudo -u ec2-user git pull origin main
+
               export NVM_DIR="/home/ec2-user/.nvm"
               [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-              DB_URL=$(aws ssm get-parameter --name "${var.ssm_parameter_name}" --with-decryption --query "Parameter.Value" --output text --region ${var.aws_region})
+              DB_URL=$(aws ssm get-parameter 
+		--name "${var.ssm_parameter_name}" 
+		--with-decryption 
+		--query "Parameter.Value" 
+		--output text 
+		--region ${var.aws_region})
 
-              cat > .env.production <<EOT
-              DATABASE_URL="$DB_URL"
-              PORT=3000
-              NODE_ENV=production
-              EOT
+		cat > apps/storefront/.env.production <<EOT 
+		DATABASE_URL="$DB_URL" 				
+		NODE_ENV="production" 
+		NEXTAUTH_URL="https://e-commerce.mavencrest.site" 						NEXTAUTH_SECRET="svB5kC5z06f0SegSPv5mGq+FARrd6NjSi8d0Ugp+ghM=" 
+		EOT
+
+		cat > apps/admin/.env.production <<EOT
+		DATABASE_URL="$DB_URL"
+		NODE_ENV="production"
+		EOT
+	      
+	      nnpm ci  
+	      npm run build:storefront
+	      npm run build:admin
 
               pm2 delete all || true
-              pm2 start npm --name "mavencrest-app" -- run start
+
+		pm2 start npm \
+  		--name "mavencrest-storefront" \
+ 		 -- run start:storefront
+
+		pm2 start npm \
+  		--name "mavencrest-admin" \
+ 		 -- run start:admin
+
+		pm2 save
               EOF
   )
 
