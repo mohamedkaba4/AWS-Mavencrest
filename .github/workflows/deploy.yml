@@ -60,3 +60,10 @@ jobs:
             -var "source_ami=${{ vars.SOURCE_AMI }}" \
             -var "subnet_id=${{ vars.BUILD_SUBNET }}" \
             ./packer
+
+      - name: Capture AMI ID
+        id: ami
+        run: |
+          AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d: -f2)
+          echo "ami_id=$AMI_ID" >> "$GITHUB_OUTPUT"
+          echo "Built AMI: $AMI_ID"
