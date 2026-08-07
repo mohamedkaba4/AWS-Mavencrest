@@ -1,77 +1,37 @@
-name: Build Mavencrest AMI
+name: Deploy Newest Mavencrest AMI
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  build-ami:
+  deploy-ami:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Setup Packer
-        uses: hashicorp/setup-packer@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-      - name: Initialize Packer
-        run: packer init ./packer
+      - name: Terraform Init
+        run: terraform init
 
-      - name: Create clean build context
-        run: |
-          rm -rf /tmp/mavencrest-build
-          mkdir -p /tmp/mavencrest-build
+      - name: Terraform Validate
+        run: terraform validate
 
-          rsync -av \
-            --exclude '.git' \
-            --exclude 'node_modules' \
-            --exclude '.next' \
-            --exclude '.turbo' \
-            --exclude '.DS_Store' \
-            --exclude '.env*' \
-            ./ /tmp/mavencrest-build/
-            
+      - name: Terraform Plan
+        run: terraform plan -var-file="prod.tfvars"
 
-      - name: Format check
-        run: packer fmt -check ./packer
-
-      - name: Validate Packer
-        run: |
-          packer validate \
-            -var "source_ami=${{ vars.SOURCE_AMI }}" \
-            -var "subnet_id=${{ vars.BUILD_SUBNET }}" \
-            ./packer
-
-      - name: Build AMI
-        run: |
-          packer build \
-            -var "source_ami=${{ vars.SOURCE_AMI }}" \
-            -var "subnet_id=${{ vars.BUILD_SUBNET }}" \
-            ./packer
-
-      - name: Capture AMI ID
-        id: ami
-        run: |
-          AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d: -f2)
-          echo "ami_id=$AMI_ID" >> "$GITHUB_OUTPUT"
-          echo "Built AMI: $AMI_ID"
-
-      - name: Publish AMI ID to SSM
-        run: |
-          aws ssm put-parameter \
-            --name "/mavencrest/prod/ami-id" \
-            --value "${{ steps.ami.outputs.ami_id }}" \
-            --type "String" \
-            --overwrite
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file="prod.tfvars"
