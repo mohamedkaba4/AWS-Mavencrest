@@ -67,3 +67,11 @@ jobs:
           AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d: -f2)
           echo "ami_id=$AMI_ID" >> "$GITHUB_OUTPUT"
           echo "Built AMI: $AMI_ID"
+
+      - name: Publish AMI ID to SSM
+        run: |
+          aws ssm put-parameter \
+            --name "/mavencrest/prod/ami-id" \
+            --value "${{ steps.ami.outputs.ami_id }}" \
+            --type "String" \
+            --overwrite
