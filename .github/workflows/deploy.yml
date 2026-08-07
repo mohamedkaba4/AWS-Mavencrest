@@ -1,0 +1,62 @@
+name: Build Mavencrest AMI
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@v3
+
+      - name: Initialize Packer
+        run: packer init ./packer
+
+      - name: Create clean build context
+        run: |
+          rm -rf /tmp/mavencrest-build
+          mkdir -p /tmp/mavencrest-build
+
+          rsync -av \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude '.next' \
+            --exclude '.turbo' \
+            --exclude '.DS_Store' \
+            --exclude '.env*' \
+            ./ /tmp/mavencrest-build/
+            
+
+      - name: Format check
+        run: packer fmt -check ./packer
+
+      - name: Validate Packer
+        run: |
+          packer validate \
+            -var "source_ami=${{ vars.SOURCE_AMI }}" \
+            -var "subnet_id=${{ vars.BUILD_SUBNET }}" \
+            ./packer
+
+      - name: Build AMI
+        run: |
+          packer build \
+            -var "source_ami=${{ vars.SOURCE_AMI }}" \
+            -var "subnet_id=${{ vars.BUILD_SUBNET }}" \
+            ./packer
