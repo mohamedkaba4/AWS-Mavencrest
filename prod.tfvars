@@ -1,0 +1,10 @@
+environment            = "prod"
+instance_type          = "t3.small"
+ssl_certificate_arn    = "arn:aws:acm:us-east-1:063899249655:certificate/960f64f6-cf6a-4df7-9fee-29e650b2ddbe"
+domain_name            = "store.mavencrest.site"
+bucket_name            = "mohamedkaba-ecommerce-images-prod"
+asg_min_size           = 2
+asg_desired_capacity   = 2
+asg_max_size           = 5
+cpu_target_utilization = 60.0
+iam_role_name          = "NeonSsmRead"
