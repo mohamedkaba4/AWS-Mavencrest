@@ -21,25 +21,6 @@ jobs:
           echo "Ref: $GITHUB_REF"
           echo "Actor: $GITHUB_ACTOR"
 
-      - name: Show OIDC claims
-        shell: bash
-        run: |
-          RESPONSE=$(curl -sSf \
-            -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com")
-
-          TOKEN=$(echo "$RESPONSE" | jq -r '.value')
-          PAYLOAD=$(echo "$TOKEN" | cut -d '.' -f2)
-
-          PAYLOAD="${PAYLOAD//-/+}"
-          PAYLOAD="${PAYLOAD//_/\/}"
-
-          case $((${#PAYLOAD} % 4)) in
-            2) PAYLOAD="${PAYLOAD}==" ;;
-            3) PAYLOAD="${PAYLOAD}=" ;;
-          esac
-
-          echo "$PAYLOAD" | base64 --decode | jq '{sub, aud, repository, ref}'
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
