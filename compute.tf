@@ -1,6 +1,6 @@
 resource "aws_launch_template" "app_lt" {
   name_prefix   = "${var.project_name}-${var.environment}-lt-"
-  image_id      = var.ami_id
+  image_id      = data.aws_ssm_parameter.mavencrest_ami.value
   instance_type = var.instance_type
 
   iam_instance_profile {
@@ -12,62 +12,75 @@ resource "aws_launch_template" "app_lt" {
     security_groups             = [aws_security_group.ec2_sg.id]
   }
 
-  user_data = base64encode(<<-EOF
-              #!/bin/bash
-              sudo systemctl start nginx
-              cd /home/ec2-user/E-commerce
-      	      sudo -u ec2-user git pull origin main
+  user_data = base64encode(<<-USER_DATA
+#!/bin/bash
+set -euo pipefail
 
-              export NVM_DIR="/home/ec2-user/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+exec > >(tee /var/log/mavencrest-user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
 
-              DB_URL=$(aws ssm get-parameter 
-		--name "${var.ssm_parameter_name}" 
-		--with-decryption 
-		--query "Parameter.Value" 
-		--output text 
-		--region ${var.aws_region})
+APP_DIR="/home/ec2-user/E-commerce"
+AWS_REGION="us-east-1"
 
-		cat > apps/storefront/.env.production <<EOT 
-		DATABASE_URL="$DB_URL" 				
-		NODE_ENV="production" 
-		NEXTAUTH_URL="https://e-commerce.mavencrest.site" 						NEXTAUTH_SECRET="svB5kC5z06f0SegSPv5mGq+FARrd6NjSi8d0Ugp+ghM=" 
-		EOT
+# Start Nginx
+systemctl enable nginx
+systemctl start nginx
 
-		cat > apps/admin/.env.production <<EOT
-		DATABASE_URL="$DB_URL"
-		NODE_ENV="production"
-		EOT
-	      
-	      nnpm ci  
-	      npm run build:storefront
-	      npm run build:admin
+# Retrieve runtime secrets
+DB_URL=$(aws ssm get-parameter \
+  --name "/nextjs/prod/DATABASE_URL" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
 
-              pm2 delete all || true
+NEXTAUTH_SECRET=$(aws ssm get-parameter \
+  --name "/nextjs/prod/NEXTAUTH_SECRET" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
 
-		pm2 start npm \
-  		--name "mavencrest-storefront" \
- 		 -- run start:storefront
+# Create runtime environment files
+cat > "$APP_DIR/apps/storefront/.env.production" <<STOREFRONT_ENV
+DATABASE_URL="$DB_URL"
+NODE_ENV="production"
+NEXTAUTH_URL="https://store.mavencrest.site"
+NEXTAUTH_SECRET="$NEXTAUTH_SECRET"
+STOREFRONT_ENV
 
-		pm2 start npm \
-  		--name "mavencrest-admin" \
- 		 -- run start:admin
+cat > "$APP_DIR/apps/admin/.env.production" <<ADMIN_ENV
+DATABASE_URL="$DB_URL"
+NODE_ENV="production"
+ADMIN_ENV
 
-		pm2 save
-              EOF
+chown ec2-user:ec2-user \
+  "$APP_DIR/apps/storefront/.env.production" \
+  "$APP_DIR/apps/admin/.env.production"
+
+# Restore the PM2 processes baked into the AMI
+sudo -iu ec2-user bash <<'DEPLOY_SCRIPT'
+set -euo pipefail
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
+cd /home/ec2-user/E-commerce
+
+pm2 resurrect
+DEPLOY_SCRIPT
+
+USER_DATA
   )
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_autoscaling_group" "app_asg" {
-  name                = "${var.project_name}-${var.environment}-asg"
-  desired_capacity    = var.asg_desired_capacity
-  min_size            = var.asg_min_size
-  max_size            = var.asg_max_size
-  target_group_arns   = [aws_lb_target_group.app_tg.arn]
+  name             = "${var.project_name}-${var.environment}-asg"
+  desired_capacity = var.asg_desired_capacity
+  min_size         = var.asg_min_size
+  max_size         = var.asg_max_size
+  target_group_arns = [aws_lb_target_group.app_tg.arn,
+    aws_lb_target_group.admin_tg.arn
+  ]
   vpc_zone_identifier = data.aws_subnets.default.ids
 
   launch_template {
@@ -78,8 +91,15 @@ resource "aws_autoscaling_group" "app_asg" {
   health_check_type         = "ELB"
   health_check_grace_period = 300
 
-  lifecycle {
-    create_before_destroy = true
+  instance_refresh {
+  strategy = "Rolling"
+
+  preferences {
+    min_healthy_percentage = 50
+    instance_warmup        = 300
+  }
+
+  triggers = ["launch_template"]
   }
 }
 
@@ -94,6 +114,10 @@ resource "aws_autoscaling_policy" "cpu_tracking" {
     }
     target_value = var.cpu_target_utilization
   }
+}
+
+data "aws_ssm_parameter" "mavencrest_ami" {
+  name = "/mavencrest/prod/ami-id"
 }
 
 # Outputs

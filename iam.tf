@@ -42,5 +42,5 @@ resource "aws_iam_role_policy_attachment" "neon_ssm_attach" {
 # Instance Profile container required by EC2 platforms
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "nextjs-ec2-profile-${var.environment}"
-  role = aws_iam_role.neon_ssm_role.name 
+  role = aws_iam_role.neon_ssm_role.name
 }

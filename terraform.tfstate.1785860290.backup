@@ -1,0 +1,702 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.8",
+  "serial": 57,
+  "lineage": "3821f212-5e2c-2ef9-d28f-66d77b4126a2",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_subnets",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "filter": [
+              {
+                "name": "vpc-id",
+                "values": [
+                  "vpc-05c520bd04e7d0952"
+                ]
+              }
+            ],
+            "id": "us-east-1",
+            "ids": [
+              "subnet-0ae277be95cf61c3a",
+              "subnet-03a169a4d7caf6b43",
+              "subnet-06b192e1798ac0584",
+              "subnet-0cf4812ae7cb69b75",
+              "subnet-09ce5f37f36aadb47",
+              "subnet-0af1d484bd8ec3f91"
+            ],
+            "tags": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_vpc",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:vpc/vpc-05c520bd04e7d0952",
+            "cidr_block": "172.31.0.0/16",
+            "cidr_block_associations": [
+              {
+                "association_id": "vpc-cidr-assoc-01682cb2b58e6932b",
+                "cidr_block": "172.31.0.0/16",
+                "state": "associated"
+              }
+            ],
+            "default": true,
+            "dhcp_options_id": "dopt-01908d2f36ed7d92d",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "filter": null,
+            "id": "vpc-05c520bd04e7d0952",
+            "instance_tenancy": "default",
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "main_route_table_id": "rtb-0d215d537c331ae11",
+            "owner_id": "063899249655",
+            "state": null,
+            "tags": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "app_asg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:autoscaling:us-east-1:063899249655:autoScalingGroup:ad154814-ceeb-4d84-9e9b-49a40f955689:autoScalingGroupName/mavencrest-prod-asg",
+            "availability_zone_distribution": [
+              {
+                "capacity_distribution_strategy": "balanced-best-effort"
+              }
+            ],
+            "availability_zones": [
+              "us-east-1a",
+              "us-east-1b",
+              "us-east-1c",
+              "us-east-1d",
+              "us-east-1e",
+              "us-east-1f"
+            ],
+            "capacity_rebalance": false,
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "default",
+                "capacity_reservation_target": []
+              }
+            ],
+            "context": "",
+            "default_cooldown": 300,
+            "default_instance_warmup": 0,
+            "desired_capacity": 2,
+            "desired_capacity_type": "",
+            "enabled_metrics": [],
+            "force_delete": false,
+            "force_delete_warm_pool": false,
+            "health_check_grace_period": 300,
+            "health_check_type": "ELB",
+            "id": "mavencrest-prod-asg",
+            "ignore_failed_scaling_activities": false,
+            "initial_lifecycle_hook": [],
+            "instance_maintenance_policy": [],
+            "instance_refresh": [],
+            "launch_configuration": "",
+            "launch_template": [
+              {
+                "id": "lt-0fc134c6b68e0ee89",
+                "name": "mavencrest-prod-lt-20260711212749576000000002",
+                "version": "$Latest"
+              }
+            ],
+            "load_balancers": [],
+            "max_instance_lifetime": 0,
+            "max_size": 5,
+            "metrics_granularity": "1Minute",
+            "min_elb_capacity": null,
+            "min_size": 2,
+            "mixed_instances_policy": [],
+            "name": "mavencrest-prod-asg",
+            "name_prefix": "",
+            "placement_group": "",
+            "predicted_capacity": 0,
+            "protect_from_scale_in": false,
+            "service_linked_role_arn": "arn:aws:iam::063899249655:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "suspended_processes": [
+              "Terminate"
+            ],
+            "tag": [],
+            "target_group_arns": [
+              "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/73bf1962a8d22fa9"
+            ],
+            "termination_policies": [],
+            "timeouts": null,
+            "traffic_source": [
+              {
+                "identifier": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/73bf1962a8d22fa9",
+                "type": "elbv2"
+              }
+            ],
+            "vpc_zone_identifier": [
+              "subnet-03a169a4d7caf6b43",
+              "subnet-06b192e1798ac0584",
+              "subnet-09ce5f37f36aadb47",
+              "subnet-0ae277be95cf61c3a",
+              "subnet-0af1d484bd8ec3f91",
+              "subnet-0cf4812ae7cb69b75"
+            ],
+            "wait_for_capacity_timeout": "10m",
+            "wait_for_elb_capacity": null,
+            "warm_pool": [],
+            "warm_pool_size": 0
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjo2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_iam_instance_profile.ec2_profile",
+            "aws_iam_role.neon_ssm_role",
+            "aws_launch_template.app_lt",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.alb_sg",
+            "aws_security_group.ec2_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "ec2_profile",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::063899249655:instance-profile/nextjs-ec2-profile-prod",
+            "create_date": "2026-07-11T21:27:43Z",
+            "id": "nextjs-ec2-profile-prod",
+            "name": "nextjs-ec2-profile-prod",
+            "name_prefix": "",
+            "path": "/",
+            "role": "mavencrest-prod-ec2-role",
+            "tags": {},
+            "tags_all": {},
+            "unique_id": "AIPAQ5YFRFP3QCRADDTIH"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.neon_ssm_role"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "neon_ssm_role",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::063899249655:role/mavencrest-prod-ec2-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-07-11T21:27:43Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "mavencrest-prod-ec2-role",
+            "inline_policy": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::063899249655:policy/mavencrest-prod-ssm-read"
+            ],
+            "max_session_duration": 3600,
+            "name": "mavencrest-prod-ec2-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {},
+            "tags_all": {},
+            "unique_id": "AROAQ5YFRFP3QFSPE5YF4"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "app_lt",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:launch-template/lt-0fc134c6b68e0ee89",
+            "block_device_mappings": [],
+            "capacity_reservation_specification": [],
+            "cpu_options": [],
+            "credit_specification": [],
+            "default_version": 10,
+            "description": "",
+            "disable_api_stop": false,
+            "disable_api_termination": false,
+            "ebs_optimized": "",
+            "elastic_gpu_specifications": [],
+            "elastic_inference_accelerator": [],
+            "enclave_options": [],
+            "hibernation_options": [],
+            "iam_instance_profile": [
+              {
+                "arn": "",
+                "name": "nextjs-ec2-profile-prod"
+              }
+            ],
+            "id": "lt-0fc134c6b68e0ee89",
+            "image_id": "ami-0b27413db2cd9a56b",
+            "instance_initiated_shutdown_behavior": "",
+            "instance_market_options": [],
+            "instance_requirements": [],
+            "instance_type": "t3.small",
+            "kernel_id": "",
+            "key_name": "",
+            "latest_version": 10,
+            "license_specification": [],
+            "maintenance_options": [],
+            "metadata_options": [],
+            "monitoring": [],
+            "name": "mavencrest-prod-lt-20260711212749576000000002",
+            "name_prefix": "mavencrest-prod-lt-",
+            "network_interfaces": [
+              {
+                "associate_carrier_ip_address": "",
+                "associate_public_ip_address": "true",
+                "connection_tracking_specification": [],
+                "delete_on_termination": "",
+                "description": "",
+                "device_index": 0,
+                "ena_srd_specification": [],
+                "interface_type": "",
+                "ipv4_address_count": 0,
+                "ipv4_addresses": [],
+                "ipv4_prefix_count": 0,
+                "ipv4_prefixes": [],
+                "ipv6_address_count": 0,
+                "ipv6_addresses": [],
+                "ipv6_prefix_count": 0,
+                "ipv6_prefixes": [],
+                "network_card_index": 0,
+                "network_interface_id": "",
+                "primary_ipv6": "",
+                "private_ip_address": "",
+                "security_groups": [
+                  "sg-084d4e135dafa71a7"
+                ],
+                "subnet_id": ""
+              }
+            ],
+            "placement": [],
+            "private_dns_name_options": [],
+            "ram_disk_id": "",
+            "security_group_names": [],
+            "tag_specifications": [],
+            "tags": {},
+            "tags_all": {},
+            "update_default_version": null,
+            "user_data": "IyEvYmluL2Jhc2gKc2V0IC1ldW8gcGlwZWZhaWwKCmV4ZWMgPiA+KHRlZSAtYSAvdmFyL2xvZy9tYXZlbmNyZXN0LXVzZXItZGF0YS5sb2cpIDI+JjEKCkFQUF9ESVI9Ii9ob21lL2VjMi11c2VyL0UtY29tbWVyY2UiClJFR0lPTj0idXMtZWFzdC0xIgpOVk1fRElSPSIvaG9tZS9lYzItdXNlci8ubnZtIgpOVk1fVkVSU0lPTj0idjAuNDAuNCIKTk9ERV9WRVJTSU9OPSIyMiIKCmVjaG8gIlN0YXJ0aW5nIE1hdmVuY3Jlc3QgYm9vdHN0cmFwLi4uIgoKIyBSZXF1aXJlZCBzeXN0ZW0gdG9vbHMKaWYgISBjb21tYW5kIC12IGN1cmwgPi9kZXYvbnVsbCAyPiYxOyB0aGVuCiAgZG5mIGluc3RhbGwgLXkgY3VybApmaQoKaWYgISBjb21tYW5kIC12IGdpdCA+L2Rldi9udWxsIDI+JjE7IHRoZW4KICBkbmYgaW5zdGFsbCAteSBnaXQKZmkKCmlmICEgY29tbWFuZCAtdiBhd3MgPi9kZXYvbnVsbCAyPiYxOyB0aGVuCiAgZWNobyAiRVJST1I6IEFXUyBDTEkgaXMgbm90IGluc3RhbGxlZCIKICBleGl0IDEKZmkKCiMgU3RhcnQgbmdpbnggbm93IGFuZCBvbiByZWJvb3QKbWtkaXIgLXAgL2V0Yy9uZ2lueC9jb25mLmQKCmNhdCA+IC9ldGMvbmdpbngvY29uZi5kL21hdmVuY3Jlc3QuY29uZiA8PCdOR0lOWCcKc2VydmVyIHsKICAgIGxpc3RlbiA4MDsKICAgIGxpc3RlbiBbOjpdOjgwOwoKICAgIHNlcnZlcl9uYW1lIHN0b3JlLm1hdmVuY3Jlc3Quc2l0ZTsKCiAgICBsb2NhdGlvbiAvIHsKICAgICAgICBwcm94eV9wYXNzIGh0dHA6Ly8xMjcuMC4wLjE6MzAwMDsKCiAgICAgICAgcHJveHlfaHR0cF92ZXJzaW9uIDEuMTsKICAgICAgICBwcm94eV9zZXRfaGVhZGVyIEhvc3QgJGhvc3Q7CiAgICAgICAgcHJveHlfc2V0X2hlYWRlciBYLVJlYWwtSVAgJHJlbW90ZV9hZGRyOwogICAgICAgIHByb3h5X3NldF9oZWFkZXIgWC1Gb3J3YXJkZWQtRm9yICRwcm94eV9hZGRfeF9mb3J3YXJkZWRfZm9yOwogICAgICAgIHByb3h5X3NldF9oZWFkZXIgWC1Gb3J3YXJkZWQtUHJvdG8gJGh0dHBfeF9mb3J3YXJkZWRfcHJvdG87CgogICAgICAgIHByb3h5X3NldF9oZWFkZXIgVXBncmFkZSAkaHR0cF91cGdyYWRlOwogICAgICAgIHByb3h5X3NldF9oZWFkZXIgQ29ubmVjdGlvbiAidXBncmFkZSI7CiAgICB9Cn0KCnNlcnZlciB7CiAgICBsaXN0ZW4gODA7CiAgICBsaXN0ZW4gWzo6XTo4MDsKCiAgICBzZXJ2ZXJfbmFtZSBhZG1pbi5tYXZlbmNyZXN0LnNpdGU7CgogICAgbG9jYXRpb24gLyB7CiAgICAgICAgcHJveHlfcGFzcyBodHRwOi8vMTI3LjAuMC4xOjMwMDE7CgogICAgICAgIHByb3h5X2h0dHBfdmVyc2lvbiAxLjE7CiAgICAgICAgcHJveHlfc2V0X2hlYWRlciBIb3N0ICRob3N0OwogICAgICAgIHByb3h5X3NldF9oZWFkZXIgWC1SZWFsLUlQICRyZW1vdGVfYWRkcjsKICAgICAgICBwcm94eV9zZXRfaGVhZGVyIFgtRm9yd2FyZGVkLUZvciAkcHJveHlfYWRkX3hfZm9yd2FyZGVkX2ZvcjsKICAgICAgICBwcm94eV9zZXRfaGVhZGVyIFgtRm9yd2FyZGVkLVByb3RvICRodHRwX3hfZm9yd2FyZGVkX3Byb3RvOwoKICAgICAgICBwcm94eV9zZXRfaGVhZGVyIFVwZ3JhZGUgJGh0dHBfdXBncmFkZTsKICAgICAgICBwcm94eV9zZXRfaGVhZGVyIENvbm5lY3Rpb24gInVwZ3JhZGUiOwogICAgfQp9Ck5HSU5YCgpuZ2lueCAtdApzeXN0ZW1jdGwgZW5hYmxlIG5naW54CnN5c3RlbWN0bCByZXN0YXJ0IG5naW54CgojIFZlcmlmeSB0aGUgcmVwb3NpdG9yeSBleGlzdHMgaW4gdGhlIEFNSQppZiBbICEgLWQgIiRBUFBfRElSLy5naXQiIF07IHRoZW4KICBlY2hvICJFUlJPUjogR2l0IHJlcG9zaXRvcnkgbm90IGZvdW5kIGF0ICRBUFBfRElSIgogIGV4aXQgMQpmaQoKIyBLZWVwIHRoZSBhcHBsaWNhdGlvbiBvd25lZCBieSBlYzItdXNlcgpjaG93biAtUiBlYzItdXNlcjplYzItdXNlciAiJEFQUF9ESVIiCgojIFVwZGF0ZSBhcHBsaWNhdGlvbiBzb3VyY2UKc3VkbyAtdSBlYzItdXNlciAtSCBlbnYgQVBQX0RJUj0iJEFQUF9ESVIiIGJhc2ggLWxjICcKICBzZXQgLWV1byBwaXBlZmFpbAoKICBjZCAiJEFQUF9ESVIiCgogIGdpdCBmZXRjaCBvcmlnaW4KICBnaXQgcmVzZXQgLS1oYXJkIG9yaWdpbi9tYWluCiAgZ2l0IGNsZWFuIC1mZAoKICBlY2hvICJBcHBsaWNhdGlvbiB1cGRhdGVkIHRvOiIKICBnaXQgbG9nIC0xIC0tb25lbGluZQonCgplY2hvICJSZXRyaWV2aW5nIGFwcGxpY2F0aW9uIHNlY3JldHMgZnJvbSBTU00uLi4iCgpEQl9VUkw9JChhd3Mgc3NtIGdldC1wYXJhbWV0ZXIgXAogIC0tbmFtZSAiL25leHRqcy9wcm9kL0RBVEFCQVNFX1VSTCIgXAogIC0td2l0aC1kZWNyeXB0aW9uIFwKICAtLXF1ZXJ5ICJQYXJhbWV0ZXIuVmFsdWUiIFwKICAtLW91dHB1dCB0ZXh0IFwKICAtLXJlZ2lvbiAiJFJFR0lPTiIpCgppZiBbIC16ICIkREJfVVJMIiBdIHx8IFsgIiREQl9VUkwiID0gIk5vbmUiIF07IHRoZW4KICBlY2hvICJFUlJPUjogREFUQUJBU0VfVVJMIGNvdWxkIG5vdCBiZSByZXRyaWV2ZWQgZnJvbSBTU00iCiAgZXhpdCAxCmZpCgpORVhUQVVUSF9TRUNSRVQ9JChhd3Mgc3NtIGdldC1wYXJhbWV0ZXIgXAogIC0tbmFtZSAiL25leHRqcy9wcm9kL05FWFRBVVRIX1NFQ1JFVCIgXAogIC0td2l0aC1kZWNyeXB0aW9uIFwKICAtLXF1ZXJ5ICJQYXJhbWV0ZXIuVmFsdWUiIFwKICAtLW91dHB1dCB0ZXh0IFwKICAtLXJlZ2lvbiAiJFJFR0lPTiIpCgppZiBbIC16ICIkTkVYVEFVVEhfU0VDUkVUIiBdIHx8IFsgIiRORVhUQVVUSF9TRUNSRVQiID0gIk5vbmUiIF07IHRoZW4KICBlY2hvICJFUlJPUjogTkVYVEFVVEhfU0VDUkVUIGNvdWxkIG5vdCBiZSByZXRyaWV2ZWQgZnJvbSBTU00iCiAgZXhpdCAxCmZpCgplY2hvICJDcmVhdGluZyBwcm9kdWN0aW9uIGVudmlyb25tZW50IGZpbGVzLi4uIgoKaW5zdGFsbCAtbyBlYzItdXNlciAtZyBlYzItdXNlciAtbSA2MDAgL2Rldi9udWxsIFwKICAiJEFQUF9ESVIvYXBwcy9zdG9yZWZyb250Ly5lbnYucHJvZHVjdGlvbiIKCmNhdCA+ICIkQVBQX0RJUi9hcHBzL3N0b3JlZnJvbnQvLmVudi5wcm9kdWN0aW9uIiA8PEVPRgpEQVRBQkFTRV9VUkw9IiREQl9VUkwiCk5PREVfRU5WPSJwcm9kdWN0aW9uIgpORVhUQVVUSF9VUkw9Imh0dHBzOi8vZS1jb21tZXJjZS5tYXZlbmNyZXN0LnNpdGUiCk5FWFRBVVRIX1NFQ1JFVD0iJE5FWFRBVVRIX1NFQ1JFVCIKRU9GCgppbnN0YWxsIC1vIGVjMi11c2VyIC1nIGVjMi11c2VyIC1tIDYwMCAvZGV2L251bGwgXAogICIkQVBQX0RJUi9hcHBzL2FkbWluLy5lbnYucHJvZHVjdGlvbiIKCmNhdCA+ICIkQVBQX0RJUi9hcHBzL2FkbWluLy5lbnYucHJvZHVjdGlvbiIgPDxFT0YKREFUQUJBU0VfVVJMPSIkREJfVVJMIgpOT0RFX0VOVj0icHJvZHVjdGlvbiIKRU9GCgpjaG93biBlYzItdXNlcjplYzItdXNlciBcCiAgIiRBUFBfRElSL2FwcHMvc3RvcmVmcm9udC8uZW52LnByb2R1Y3Rpb24iIFwKICAiJEFQUF9ESVIvYXBwcy9hZG1pbi8uZW52LnByb2R1Y3Rpb24iCgpjaG1vZCA2MDAgXAogICIkQVBQX0RJUi9hcHBzL3N0b3JlZnJvbnQvLmVudi5wcm9kdWN0aW9uIiBcCiAgIiRBUFBfRElSL2FwcHMvYWRtaW4vLmVudi5wcm9kdWN0aW9uIgoKZWNobyAiSW5zdGFsbGluZyBOVk0sIE5vZGUuanMgYW5kIGFwcGxpY2F0aW9uIGRlcGVuZGVuY2llcy4uLiIKCnN1ZG8gLXUgZWMyLXVzZXIgLUggZW52IFwKICBBUFBfRElSPSIkQVBQX0RJUiIgXAogIE5WTV9ESVI9IiROVk1fRElSIiBcCiAgTlZNX1ZFUlNJT049IiROVk1fVkVSU0lPTiIgXAogIE5PREVfVkVSU0lPTj0iJE5PREVfVkVSU0lPTiIgXAogIGJhc2ggLWxjICcKICAgIHNldCAtZXVvIHBpcGVmYWlsCgogICAgaWYgWyAhIC1zICIkTlZNX0RJUi9udm0uc2giIF07IHRoZW4KICAgICAgZWNobyAiTlZNIG5vdCBmb3VuZC4gSW5zdGFsbGluZyAkTlZNX1ZFUlNJT04uLi4iCgogICAgICBta2RpciAtcCAiJE5WTV9ESVIiCgogICAgICBjdXJsIC1mc1NMIFwKICAgICAgICAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL252bS1zaC9udm0vJE5WTV9WRVJTSU9OL2luc3RhbGwuc2giIFwKICAgICAgICB8IGJhc2gKICAgIGZpCgogICAgaWYgWyAhIC1zICIkTlZNX0RJUi9udm0uc2giIF07IHRoZW4KICAgICAgZWNobyAiRVJST1I6IE5WTSBpbnN0YWxsYXRpb24gZmFpbGVkIgogICAgICBleGl0IDEKICAgIGZpCgogICAgc291cmNlICIkTlZNX0RJUi9udm0uc2giCgogICAgZWNobyAiSW5zdGFsbGluZyBOb2RlLmpzICROT0RFX1ZFUlNJT04uLi4iCiAgICBudm0gaW5zdGFsbCAiJE5PREVfVkVSU0lPTiIKICAgIG52bSBhbGlhcyBkZWZhdWx0ICIkTk9ERV9WRVJTSU9OIgogICAgbnZtIHVzZSAiJE5PREVfVkVSU0lPTiIKCiAgICBlY2hvICJOb2RlIHZlcnNpb246ICQobm9kZSAtLXZlcnNpb24pIgogICAgZWNobyAibnBtIHZlcnNpb246ICQobnBtIC0tdmVyc2lvbikiCgogICAgaWYgISBjb21tYW5kIC12IHBtMiA+L2Rldi9udWxsIDI+JjE7IHRoZW4KICAgICAgZWNobyAiSW5zdGFsbGluZyBQTTIuLi4iCiAgICAgIG5wbSBpbnN0YWxsIC0tZ2xvYmFsIHBtMgogICAgZmkKCiAgICBlY2hvICJQTTIgdmVyc2lvbjogJChwbTIgLS12ZXJzaW9uKSIKCiAgICBjZCAiJEFQUF9ESVIiCgogICAgZWNobyAiUmVtb3Zpbmcgb2xkIGRlcGVuZGVuY2llcyBhbmQgYnVpbGQgb3V0cHV0Li4uIgoKICAgIHJtIC1yZiBcCiAgICAgIG5vZGVfbW9kdWxlcyBcCiAgICAgIGFwcHMvc3RvcmVmcm9udC9ub2RlX21vZHVsZXMgXAogICAgICBhcHBzL2FkbWluL25vZGVfbW9kdWxlcyBcCiAgICAgIHBhY2thZ2VzL2RhdGFiYXNlL25vZGVfbW9kdWxlcyBcCiAgICAgIGFwcHMvc3RvcmVmcm9udC8ubmV4dCBcCiAgICAgIGFwcHMvYWRtaW4vLm5leHQKCiAgICBlY2hvICJJbnN0YWxsaW5nIGRlcGVuZGVuY2llcy4uLiIKICAgIG5wbSBjaSAtLWluY2x1ZGU9b3B0aW9uYWwKCiAgICBlY2hvICJHZW5lcmF0aW5nIFByaXNtYSBjbGllbnQuLi4iCiAgICBucG0gcnVuIGRiOmdlbmVyYXRlCgogICAgZWNobyAiQnVpbGRpbmcgc3RvcmVmcm9udC4uLiIKICAgIG5wbSBydW4gYnVpbGQ6c3RvcmVmcm9udAoKICAgIGVjaG8gIkJ1aWxkaW5nIGFkbWluLi4uIgogICAgbnBtIHJ1biBidWlsZDphZG1pbgoKICAgIGVjaG8gIlN0YXJ0aW5nIGFwcGxpY2F0aW9ucyB3aXRoIFBNMi4uLiIKCiAgICBwbTIgZGVsZXRlIG1hdmVuY3Jlc3Qtc3RvcmVmcm9udCB8fCB0cnVlCiAgICBwbTIgZGVsZXRlIG1hdmVuY3Jlc3QtYWRtaW4gfHwgdHJ1ZQoKICAgIHBtMiBzdGFydCBucG0gXAogICAgICAtLW5hbWUgbWF2ZW5jcmVzdC1zdG9yZWZyb250IFwKICAgICAgLS1jd2QgIiRBUFBfRElSIiBcCiAgICAgIC0tIHJ1biBzdGFydDpzdG9yZWZyb250CgogICAgcG0yIHN0YXJ0IG5wbSBcCiAgICAgIC0tbmFtZSBtYXZlbmNyZXN0LWFkbWluIFwKICAgICAgLS1jd2QgIiRBUFBfRElSIiBcCiAgICAgIC0tIHJ1biBzdGFydDphZG1pbgoKICAgIHBtMiBzYXZlCiAgICBwbTIgc3RhdHVzCiAgJwoKZWNobyAiQ29uZmlndXJpbmcgUE0yIHN5c3RlbWQgc3RhcnR1cC4uLiIKCk5PREVfVkVSU0lPTl9GVUxMPSQoc3VkbyAtdSBlYzItdXNlciAtSCBlbnYgXAogIE5WTV9ESVI9IiROVk1fRElSIiBcCiAgTk9ERV9WRVJTSU9OPSIkTk9ERV9WRVJTSU9OIiBcCiAgYmFzaCAtbGMgJwogICAgc2V0IC1ldW8gcGlwZWZhaWwKICAgIHNvdXJjZSAiJE5WTV9ESVIvbnZtLnNoIgogICAgbnZtIHVzZSAiJE5PREVfVkVSU0lPTiIgPi9kZXYvbnVsbAogICAgbnZtIHZlcnNpb24KICAnKQoKaWYgWyAteiAiJE5PREVfVkVSU0lPTl9GVUxMIiBdIHx8IFsgIiROT0RFX1ZFUlNJT05fRlVMTCIgPSAiTi9BIiBdOyB0aGVuCiAgZWNobyAiRVJST1I6IENvdWxkIG5vdCBkZXRlcm1pbmUgdGhlIGluc3RhbGxlZCBOb2RlLmpzIHZlcnNpb24iCiAgZXhpdCAxCmZpCgpOT0RFX0JJTl9ESVI9IiROVk1fRElSL3ZlcnNpb25zL25vZGUvJE5PREVfVkVSU0lPTl9GVUxML2JpbiIKUE0yX0JJTj0iJE5PREVfQklOX0RJUi9wbTIiCgppZiBbICEgLXggIiRQTTJfQklOIiBdOyB0aGVuCiAgZWNobyAiRVJST1I6IFBNMiB3YXMgbm90IGZvdW5kIGF0ICRQTTJfQklOIgogIGV4aXQgMQpmaQoKZW52IFBBVEg9IiROT0RFX0JJTl9ESVI6L3Vzci9sb2NhbC9zYmluOi91c3IvbG9jYWwvYmluOi91c3Ivc2JpbjovdXNyL2JpbiIgXAogICIkUE0yX0JJTiIgc3RhcnR1cCBzeXN0ZW1kIFwKICAtdSBlYzItdXNlciBcCiAgLS1ocCAvaG9tZS9lYzItdXNlcgoKc3lzdGVtY3RsIGRhZW1vbi1yZWxvYWQKc3lzdGVtY3RsIGVuYWJsZSBwbTItZWMyLXVzZXIKc3lzdGVtY3RsIHJlc3RhcnQgcG0yLWVjMi11c2VyCgplY2hvICJWYWxpZGF0aW5nIG5naW54IGNvbmZpZ3VyYXRpb24uLi4iCgpuZ2lueCAtdApzeXN0ZW1jdGwgcmVzdGFydCBuZ2lueAoKZWNobyAiV2FpdGluZyBmb3IgYXBwbGljYXRpb25zIHRvIGJlY29tZSBoZWFsdGh5Li4uIgoKZm9yIGF0dGVtcHQgaW4gezEuLjMwfTsgZG8KICBTVE9SRUZST05UX09LPWZhbHNlCiAgQURNSU5fT0s9ZmFsc2UKCiAgaWYgY3VybCAtLWZhaWwgLS1zaWxlbnQgLS1tYXgtdGltZSAzIFwKICAgIGh0dHA6Ly8xMjcuMC4wLjE6MzAwMC8gPi9kZXYvbnVsbDsgdGhlbgogICAgU1RPUkVGUk9OVF9PSz10cnVlCiAgZmkKCiAgaWYgY3VybCAtLWZhaWwgLS1zaWxlbnQgLS1tYXgtdGltZSAzIFwKICAgIGh0dHA6Ly8xMjcuMC4wLjE6MzAwMS8gPi9kZXYvbnVsbDsgdGhlbgogICAgQURNSU5fT0s9dHJ1ZQogIGZpCgogIGlmIFsgIiRTVE9SRUZST05UX09LIiA9IHRydWUgXSAmJiBbICIkQURNSU5fT0siID0gdHJ1ZSBdOyB0aGVuCiAgICBlY2hvICJTdG9yZWZyb250IGFuZCBhZG1pbiBhcmUgaGVhbHRoeSIKICAgIGVjaG8gIk1hdmVuY3Jlc3QgYm9vdHN0cmFwIGNvbXBsZXRlZCBzdWNjZXNzZnVsbHkiCiAgICBleGl0IDAKICBmaQoKICBlY2hvICJXYWl0aW5nIGZvciBhcHBsaWNhdGlvbnMuLi4gYXR0ZW1wdCAkYXR0ZW1wdC8zMCIKICBzbGVlcCA1CmRvbmUKCmVjaG8gIkVSUk9SOiBPbmUgb3IgYm90aCBhcHBsaWNhdGlvbnMgZmFpbGVkIGhlYWx0aCBjaGVja3MiCgpzdWRvIC11IGVjMi11c2VyIC1IIGVudiBcCiAgTlZNX0RJUj0iJE5WTV9ESVIiIFwKICBOT0RFX1ZFUlNJT049IiROT0RFX1ZFUlNJT04iIFwKICBiYXNoIC1sYyAnCiAgICBzb3VyY2UgIiROVk1fRElSL252bS5zaCIKICAgIG52bSB1c2UgIiROT0RFX1ZFUlNJT04iID4vZGV2L251bGwKCiAgICBwbTIgc3RhdHVzIHx8IHRydWUKICAgIHBtMiBsb2dzIC0tbGluZXMgMTAwIC0tbm9zdHJlYW0gfHwgdHJ1ZQogICcKCmVjaG8gIlBNMiBzeXN0ZW1kIHN0YXR1czoiCnN5c3RlbWN0bCBzdGF0dXMgcG0yLWVjMi11c2VyIC0tbm8tcGFnZXIgfHwgdHJ1ZQoKZWNobyAiTmdpbnggc3RhdHVzOiIKc3lzdGVtY3RsIHN0YXR1cyBuZ2lueCAtLW5vLXBhZ2VyIHx8IHRydWUKCmVjaG8gIkxpc3RlbmluZyBwb3J0czoiCnNzIC1sbnRwIHx8IHRydWUKCmV4aXQgMQ==",
+            "vpc_security_group_ids": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_instance_profile.ec2_profile",
+            "aws_iam_role.neon_ssm_role",
+            "aws_security_group.alb_sg",
+            "aws_security_group.ec2_sg",
+            "data.aws_vpc.default"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "app_tg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/73bf1962a8d22fa9",
+            "arn_suffix": "targetgroup/mavencrest-prod-tg/73bf1962a8d22fa9",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200",
+                "path": "/",
+                "port": "80",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/73bf1962a8d22fa9",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [
+              "arn:aws:elasticloadbalancing:us-east-1:063899249655:loadbalancer/app/mavencrest-prod-alb/c15a1e397d211a02"
+            ],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "mavencrest-prod-tg",
+            "name_prefix": "",
+            "port": 80,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {},
+            "tags_all": {},
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "images",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::mohamedkaba-ecommerce-images-prod",
+            "bucket": "mohamedkaba-ecommerce-images-prod",
+            "bucket_domain_name": "mohamedkaba-ecommerce-images-prod.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "mohamedkaba-ecommerce-images-prod.s3.us-east-1.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": false,
+            "grant": [
+              {
+                "id": "94d96e75abf888de97beba2f7e1711394ee01bc26241f8e9837eda8550382ab3",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3AQBSTGFYJSTF",
+            "id": "mohamedkaba-ecommerce-images-prod",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Condition\":{\"StringEquals\":{\"AWS:SourceArn\":\"arn:aws:cloudfront::063899249655:distribution/E3778RYUKTMY9L\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"},\"Resource\":\"arn:aws:s3:::mohamedkaba-ecommerce-images-prod/*\",\"Sid\":\"AllowCloudFrontServicePrincipal\"}],\"Version\":\"2012-10-17\"}",
+            "region": "us-east-1",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb_sg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group/sg-09d189f0eae348724",
+            "description": "Allow inbound public HTTP and HTTPS traffic to ALB",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-09d189f0eae348724",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "mavencrest-prod-alb-sg",
+            "name_prefix": "",
+            "owner_id": "063899249655",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-alb-sg"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-alb-sg"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "ec2_sg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group/sg-084d4e135dafa71a7",
+            "description": "Allow inbound web traffic from ALB and SSH debugging",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-084d4e135dafa71a7",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 22
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-09d189f0eae348724"
+                ],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "mavencrest-prod-ec2-sg",
+            "name_prefix": "",
+            "owner_id": "063899249655",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-ec2-sg"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-ec2-sg"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "data.aws_vpc.default"
+          ],
+          "create_before_destroy": true
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

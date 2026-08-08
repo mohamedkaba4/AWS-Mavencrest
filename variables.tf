@@ -25,11 +25,6 @@ variable "bucket_name" {
   description = "The globally unique name of the S3 bucket storing images."
 }
 
-variable "ami_id" {
-  type        = string
-  description = "The custom AMI ID with Next.js and Nginx pre-installed"
-}
-
 variable "iam_role_name" {
   type        = string
   default     = "NeonSsmRead"

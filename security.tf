@@ -46,7 +46,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] 
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -60,6 +60,15 @@ resource "aws_security_group" "ec2_sg" {
     Name        = "${var.project_name}-${var.environment}-ec2-sg"
     Environment = var.environment
   }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "admin_from_alb" {
+  security_group_id            = aws_security_group.ec2_sg.id
+  referenced_security_group_id = aws_security_group.alb_sg.id
+
+  from_port   = 3001
+  to_port     = 3001
+  ip_protocol = "tcp"
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
@@ -126,6 +135,6 @@ resource "aws_s3_bucket_policy" "allow_cloudfront" {
 }
 
 output "cloudfront_url" {
-  value       = "https://${aws_cloudfront_distribution.cdn.domain_name}"
-  description = "Base URL for your environment's product images"
+  value       = aws_cloudfront_distribution.cdn.domain_name
+  description = "CloudFront distribution domain name"
 }
