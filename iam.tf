@@ -5,20 +5,24 @@ resource "aws_iam_policy" "app_ssm_policy" {
 
   policy = jsonencode({
     Version = "2012-10-17"
+
     Statement = [
       {
-        Effect   = "Allow"
+        Effect = "Allow"
 
-        Action   =  [
-        "ssm:GetParameter",
-        "ssm:GetParameters"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
         ]
 
         Resource = "arn:aws:ssm:${var.aws_region}:*:parameter/nextjs/${var.environment}/*"
-
       }
     ]
   })
+
+  lifecycle {
+    ignore_changes = [tags, tags_all]
+  }
 }
 
 # IAM Role and Trust Policy allowing EC2 to assume it
