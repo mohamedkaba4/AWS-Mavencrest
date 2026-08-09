@@ -98,8 +98,7 @@ resource "aws_autoscaling_group" "app_asg" {
     min_healthy_percentage = 50
     instance_warmup        = 300
   }
-
-  triggers = ["launch_template"]
+  
   }
 }
 
