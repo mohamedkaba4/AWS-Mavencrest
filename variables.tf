@@ -25,12 +25,6 @@ variable "bucket_name" {
   description = "The globally unique name of the S3 bucket storing images."
 }
 
-variable "iam_role_name" {
-  type        = string
-  default     = "NeonSsmRead"
-  description = "The role that reads Neon db string"
-}
-
 variable "ssm_parameter_name" {
   type        = string
   default     = "/nextjs/prod/DATABASE_URL"

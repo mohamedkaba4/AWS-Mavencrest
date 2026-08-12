@@ -40,17 +40,63 @@ NEXTAUTH_SECRET=$(aws ssm get-parameter \
   --output text \
   --region "$AWS_REGION")
 
+GOOGLE_CLIENT_ID=$(aws ssm get-parameter \
+  --name "/nextjs/prod/GOOGLE_CLIENT_ID" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
+
+GOOGLE_CLIENT_SECRET=$(aws ssm get-parameter \
+  --name "/nextjs/prod/GOOGLE_CLIENT_SECRET" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
+
+GITHUB_ID=$(aws ssm get-parameter \
+  --name "/nextjs/prod/GITHUB_ID" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
+
+GITHUB_SECRET=$(aws ssm get-parameter \
+  --name "/nextjs/prod/GITHUB_SECRET" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
+
+ADMIN_EMAIL=$(aws ssm get-parameter \
+  --name "/nextjs/prod/ADMIN_EMAIL" \
+  --with-decryption \
+  --query "Parameter.Value" \
+  --output text \
+  --region "$AWS_REGION")
+
 # Create runtime environment files
 cat > "$APP_DIR/apps/storefront/.env.production" <<STOREFRONT_ENV
 DATABASE_URL="$DB_URL"
 NODE_ENV="production"
 NEXTAUTH_URL="https://store.mavencrest.site"
 NEXTAUTH_SECRET="$NEXTAUTH_SECRET"
+GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
+GITHUB_ID="$GITHUB_ID"
+GITHUB_SECRET="$GITHUB_SECRET"
 STOREFRONT_ENV
 
 cat > "$APP_DIR/apps/admin/.env.production" <<ADMIN_ENV
 DATABASE_URL="$DB_URL"
 NODE_ENV="production"
+NEXTAUTH_URL="https://admin.mavencrest.site"
+NEXTAUTH_SECRET="$NEXTAUTH_SECRET"
+GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
+GITHUB_ID="$GITHUB_ID"
+GITHUB_SECRET="$GITHUB_SECRET"
+ADMIN_EMAIL="$ADMIN_EMAIL"
 ADMIN_ENV
 
 chown ec2-user:ec2-user \
@@ -92,13 +138,13 @@ resource "aws_autoscaling_group" "app_asg" {
   health_check_grace_period = 300
 
   instance_refresh {
-  strategy = "Rolling"
+    strategy = "Rolling"
 
-  preferences {
-    min_healthy_percentage = 50
-    instance_warmup        = 300
-  }
-  
+    preferences {
+      min_healthy_percentage = 50
+      instance_warmup        = 300
+    }
+
   }
 }
 

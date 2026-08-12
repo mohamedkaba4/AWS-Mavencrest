@@ -7,4 +7,3 @@ asg_min_size           = 2
 asg_desired_capacity   = 2
 asg_max_size           = 5
 cpu_target_utilization = 60.0
-iam_role_name          = "NeonSsmRead"
