@@ -3,31 +3,26 @@ resource "aws_security_group" "alb_sg" {
   description = "Allow inbound public HTTP and HTTPS traffic to ALB"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name        = "${var.project_name}-${var.environment}-alb-sg"
     Environment = var.environment
+    }
   }
+
+resource "aws_vpc_security_group_ingress_rule" "alb_https" {
+  security_group_id = aws_security_group.alb_sg.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  from_port   = 443
+  to_port     = 443
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "alb_all_outbound" {
+  security_group_id = aws_security_group.alb_sg.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
 }
 
 resource "aws_security_group" "ec2_sg" {
@@ -35,31 +30,28 @@ resource "aws_security_group" "ec2_sg" {
   description = "Allow inbound web traffic from ALB and SSH debugging"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name        = "${var.project_name}-${var.environment}-ec2-sg"
     Environment = var.environment
   }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ssh_from_alb" {
+  security_group_id            = aws_security_group.ec2_sg.id
+
+  cidr_ipv4   = "24.197.163.53/32"
+  from_port   = 22
+  to_port     = 22
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "store_from_alb" {
+  security_group_id            = aws_security_group.ec2_sg.id
+  referenced_security_group_id = aws_security_group.alb_sg.id
+
+  from_port   = 3000
+  to_port     = 3000
+  ip_protocol = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "admin_from_alb" {
@@ -69,6 +61,13 @@ resource "aws_vpc_security_group_ingress_rule" "admin_from_alb" {
   from_port   = 3001
   to_port     = 3001
   ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "ec2_all_outbound" {
+  security_group_id = aws_security_group.ec2_sg.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
 }
 
 resource "aws_cloudfront_origin_access_control" "oac" {
