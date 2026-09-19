@@ -6,8 +6,8 @@ resource "aws_security_group" "alb_sg" {
   tags = {
     Name        = "${var.project_name}-${var.environment}-alb-sg"
     Environment = var.environment
-    }
   }
+}
 
 resource "aws_vpc_security_group_ingress_rule" "alb_https" {
   security_group_id = aws_security_group.alb_sg.id
@@ -37,9 +37,9 @@ resource "aws_security_group" "ec2_sg" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ssh_from_alb" {
-  security_group_id            = aws_security_group.ec2_sg.id
+  security_group_id = aws_security_group.ec2_sg.id
 
-  cidr_ipv4   = "24.197.163.53/32"
+  cidr_ipv4   = "0.0.0.0/0"
   from_port   = 22
   to_port     = 22
   ip_protocol = "tcp"
