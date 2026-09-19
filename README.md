@@ -55,10 +55,10 @@ Packer
         └── Build New AMI
         │
         ▼
-AMI ID Published to SSM (call CD repo when this step is complete) 
+AMI ID Published to SSM 
         │
         ▼
-AWS-Mavencrest Repository
+Trigger AWS-Mavencrest CD Workflow
         │
         ▼
 GitHub Actions — CD
@@ -93,11 +93,11 @@ Old Instances Terminated
 
 **1. Application change**
 
-A push to the "deploy" branch triggers the GitHub Actions workflow.
+A push to the `deploy` branch triggers the CI workflow (ci-cd.yml)in the E-Commerce repository.
 
 **2. Build and validation**
 
-The pipeline validates the application before creating a deployable image.
+The CI pipeline validates the application. Once the CI workflow completes successfully, the Packer AMI build workflow (deploy.yml) is triggered.
 
 **3. Immutable AMI**
 
@@ -105,7 +105,7 @@ Packer creates a new Amazon Machine Image with the application and required runt
 
 **4. Infrastructure update**
 
-The new AMI ID is passed into the infrastructure deployment process. Terraform updates the EC2 Launch Template with the new image.
+The new AMI ID is passed to the infrastructure deployment process. Terraform updates the EC2 Launch Template with the new image.
 
 **5. Rolling instance replacement**
 
