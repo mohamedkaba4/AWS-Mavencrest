@@ -21,11 +21,18 @@ exec > >(tee /var/log/mavencrest-user-data.log | logger -t user-data -s 2>/dev/c
 APP_DIR="/home/ec2-user/E-commerce"
 AWS_REGION="us-east-1"
 
+# ---------------------------------------------------------
 # Start Nginx
+# ---------------------------------------------------------
+
 systemctl enable nginx
 systemctl start nginx
 
-# Retrieve runtime secrets
+
+# ---------------------------------------------------------
+# Retrieve runtime secrets from SSM Parameter Store
+# ---------------------------------------------------------
+
 DB_URL=$(aws ssm get-parameter \
   --name "/nextjs/prod/DATABASE_URL" \
   --with-decryption \
@@ -75,7 +82,11 @@ ADMIN_EMAIL=$(aws ssm get-parameter \
   --output text \
   --region "$AWS_REGION")
 
-# Create runtime environment files
+
+# ---------------------------------------------------------
+# Write runtime environment files
+# ---------------------------------------------------------
+
 cat > "$APP_DIR/apps/storefront/.env.production" <<STOREFRONT_ENV
 DATABASE_URL="$DB_URL"
 NODE_ENV="production"
@@ -86,6 +97,7 @@ GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
 GITHUB_ID="$GITHUB_ID"
 GITHUB_SECRET="$GITHUB_SECRET"
 STOREFRONT_ENV
+
 
 cat > "$APP_DIR/apps/admin/.env.production" <<ADMIN_ENV
 DATABASE_URL="$DB_URL"
@@ -99,11 +111,20 @@ GITHUB_SECRET="$GITHUB_SECRET"
 ADMIN_EMAIL="$ADMIN_EMAIL"
 ADMIN_ENV
 
+
 chown ec2-user:ec2-user \
   "$APP_DIR/apps/storefront/.env.production" \
   "$APP_DIR/apps/admin/.env.production"
 
-# Restore the PM2 processes baked into the AMI
+chmod 600 \
+  "$APP_DIR/apps/storefront/.env.production" \
+  "$APP_DIR/apps/admin/.env.production"
+
+
+# ---------------------------------------------------------
+# Start PM2 fresh using CURRENT runtime secrets
+# ---------------------------------------------------------
+
 sudo -iu ec2-user bash <<'DEPLOY_SCRIPT'
 set -euo pipefail
 
@@ -112,21 +133,71 @@ export NVM_DIR="$HOME/.nvm"
 
 cd /home/ec2-user/E-commerce
 
-pm2 resurrect
+# Remove any stale PM2 processes or AMI-baked dump
+pm2 delete all 2>/dev/null || true
+rm -f "$HOME/.pm2/dump.pm2"
+
+
+# ---------------------------------------------------------
+# Start storefront
+# ---------------------------------------------------------
+
+set -a
+source apps/storefront/.env.production
+set +a
+
+pm2 start npm \
+  --name mavencrest-storefront \
+  -- run start:store
+
+
+# ---------------------------------------------------------
+# Start admin
+# ---------------------------------------------------------
+
+set -a
+source apps/admin/.env.production
+set +a
+
+pm2 start npm \
+  --name mavencrest-admin \
+  -- run start:admin
+
+
+# Save CURRENT process state for reboot recovery
+pm2 save --force
+
 DEPLOY_SCRIPT
+
+
+# ---------------------------------------------------------
+# Configure PM2 to automatically restore processes on reboot
+# ---------------------------------------------------------
+
+env PATH=/usr/local/bin:/usr/bin:/bin \
+  /usr/lib/node_modules/pm2/bin/pm2 startup systemd \
+  -u ec2-user \
+  --hp /home/ec2-user
+
+
+echo "Mavencrest deployment completed successfully."
 
 USER_DATA
   )
 }
+
 
 resource "aws_autoscaling_group" "app_asg" {
   name             = "${var.project_name}-${var.environment}-asg"
   desired_capacity = var.asg_desired_capacity
   min_size         = var.asg_min_size
   max_size         = var.asg_max_size
-  target_group_arns = [aws_lb_target_group.app_tg.arn,
+
+  target_group_arns = [
+    aws_lb_target_group.app_tg.arn,
     aws_lb_target_group.admin_tg.arn
   ]
+
   vpc_zone_identifier = data.aws_subnets.default.ids
 
   launch_template {
@@ -144,9 +215,9 @@ resource "aws_autoscaling_group" "app_asg" {
       min_healthy_percentage = 50
       instance_warmup        = 300
     }
-
   }
 }
+
 
 resource "aws_autoscaling_policy" "cpu_tracking" {
   name                   = "${var.project_name}-${var.environment}-cpu-policy"
@@ -157,15 +228,17 @@ resource "aws_autoscaling_policy" "cpu_tracking" {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
+
     target_value = var.cpu_target_utilization
   }
 }
+
 
 data "aws_ssm_parameter" "mavencrest_ami" {
   name = "/mavencrest/prod/ami-id"
 }
 
-# Outputs
+
 output "alb_dns_name" {
   value       = aws_lb.main.dns_name
   description = "The public URL to access the application load balancer"
