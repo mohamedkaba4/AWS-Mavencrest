@@ -1,0 +1,20 @@
+Design choices made and trade-offs
+Chose AWS EC2 for managed VMs, autoscaling, revisions, and AMI artifacts.
+Trade-off: more control and management, less flexibility than containers with deployments.
+
+Problems I ran into, and how to troubleshoot them?
+Permissions that allowed GitHub to access the SSM Parameter Store to update the AMI ID with the new deployment image.
+
+What did I learn from the project?
+How to build AWS infra with Terraform 
+How to use and apply IAM access with Terraform.
+How to design safer deployment workflows.
+Canary-style deployment with target groups updating the AMI of registered targets after a deployment.
+How to troubleshoot across Terraform, Azure, containers, and the application.
+
+What would I change if this were supporting real production traffic?
+Add Web Application Firewall (WAF).
+Deploy across multiple regions.
+Increase staging and production isolation.
+Improve monitoring, alerting, and security scanning.
+Blue/green deployments.

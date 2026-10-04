@@ -1,6 +1,11 @@
 # AWS E-Commerce Infrastructure
 
-Production-style AWS infrastructure for the Mavencrest E-Commerce platform. It is provisioned with **Terraform**, tested and deployed through an automated **GitHub Actions CI/CD pipeline**.
+Production-style AWS infrastructure for the Mavencrest E-Commerce platform. It is provisioned with **Terraform** and deployed through an automated **GitHub Actions CI/CD pipeline**.
+
+The CI/CD process is split across two repositories:
+
+- **E-Commerce repository** — handles application Continuous Integration (CI), validation, and Amazon Machine Image (AMI) creation
+- **AWS-Mavencrest repository** — handles Continuous Delivery (CD), Terraform deployment, Launch Template updates, and Auto Scaling instance refreshes
 
 The architecture uses EC2 Auto Scaling, an Application Load Balancer, immutable AMIs, and automated instance replacement to provide repeatable and highly available application deployments.
 
@@ -27,11 +32,13 @@ The architecture uses EC2 Auto Scaling, an Application Load Balancer, immutable 
 
 Application deployments use an immutable infrastructure workflow. Instead of updating application code directly on running EC2 instances, each deployment produces a new machine image containing the updated application.
 
+The pipeline is split between the application and infrastructure repositories. The E-Commerce repository handles CI and AMI creation, while the AWS-Mavencrest repository handles CD and infrastructure rollout.
+
 ```text
-Application Repository
+E-Commerce Repository
         │
         ▼
-Developer Push
+Application Change
         │
         ▼
 GitHub Actions — CI
@@ -48,15 +55,16 @@ Packer
         └── Build New AMI
         │
         ▼
-AMI ID Published to SSM
+AMI ID Published to SSM 
         │
         ▼
-Trigger AWS Infrastructure Repository
-        │
-        └── GitHub Actions Workflow
+Trigger AWS-Mavencrest CD Workflow
         │
         ▼
-Terraform — CD
+GitHub Actions — CD
+        │
+        ▼
+Terraform
         │
         ├── terraform init
         ├── terraform validate
@@ -85,11 +93,11 @@ Old Instances Terminated
 
 **1. Application change**
 
-A push to the "deploy" branch triggers the GitHub Actions workflow.
+A push to the `deploy` branch triggers the CI workflow (ci-cd.yml)in the E-Commerce repository.
 
 **2. Build and validation**
 
-The pipeline validates the application before creating a deployable image.
+The CI pipeline validates the application. Once the CI workflow completes successfully, the Packer AMI build workflow (deploy.yml) is triggered.
 
 **3. Immutable AMI**
 
@@ -97,11 +105,11 @@ Packer creates a new Amazon Machine Image with the application and required runt
 
 **4. Infrastructure update**
 
-The new AMI ID is passed into the infrastructure deployment process. Terraform updates the EC2 Launch Template with the new image.
+The new AMI ID is passed to the infrastructure deployment process. Terraform updates the EC2 Launch Template with the new image.
 
 **5. Rolling instance replacement**
 
-The Auto Scaling Group performs an instance refresh, gradually replacing instances running the previous AMI.
+The Auto Scaling Group performs an instance refresh, replacing instances running the previous AMI over time.
 
 **6. Health validation**
 
@@ -144,7 +152,7 @@ terraform apply prod.tfplan
 
 Terraform state is stored remotely in S3 bucket rather than relying on local state files.
 
-Remote state provides a representation for deployed infrastructure and prevents the infrastructure configuration from depending on a single workstation.
+Remote state provides a representation of deployed infrastructure and prevents the infrastructure configuration from depending on a single workstation.
 
 ---
 
@@ -158,7 +166,7 @@ The deployment follows several AWS security practices:
 - Application instances accessed through the load-balancing layer
 - Security Groups controlling network access
 - HTTPS for public application traffic
-
+  
 ---
 
 ## Deployment Model
