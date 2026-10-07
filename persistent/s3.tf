@@ -1,6 +1,11 @@
 # Storage layer for product assets
 resource "aws_s3_bucket" "images" {
-  bucket = var.bucket_name
+  bucket        = var.bucket_name
+  force_destroy = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
 
   tags = {
     Environment = var.environment
@@ -8,7 +13,7 @@ resource "aws_s3_bucket" "images" {
   }
 }
 
-# Explicitly block all incoming public traversal at the bucket layer
+# Explicitly block all incoming public access at the bucket layer
 resource "aws_s3_bucket_public_access_block" "images" {
   bucket                  = aws_s3_bucket.images.id
   block_public_acls       = true

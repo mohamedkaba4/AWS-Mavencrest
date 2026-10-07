@@ -21,18 +21,11 @@ exec > >(tee /var/log/mavencrest-user-data.log | logger -t user-data -s 2>/dev/c
 APP_DIR="/home/ec2-user/E-commerce"
 AWS_REGION="us-east-1"
 
-# ---------------------------------------------------------
 # Start Nginx
-# ---------------------------------------------------------
-
 systemctl enable nginx
 systemctl start nginx
 
-
-# ---------------------------------------------------------
 # Retrieve runtime secrets from SSM Parameter Store
-# ---------------------------------------------------------
-
 DB_URL=$(aws ssm get-parameter \
   --name "/nextjs/prod/DATABASE_URL" \
   --with-decryption \
@@ -82,11 +75,7 @@ ADMIN_EMAIL=$(aws ssm get-parameter \
   --output text \
   --region "$AWS_REGION")
 
-
-# ---------------------------------------------------------
 # Write runtime environment files
-# ---------------------------------------------------------
-
 cat > "$APP_DIR/apps/storefront/.env.production" <<STOREFRONT_ENV
 DATABASE_URL="$DB_URL"
 NODE_ENV="production"
@@ -97,7 +86,6 @@ GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
 GITHUB_ID="$GITHUB_ID"
 GITHUB_SECRET="$GITHUB_SECRET"
 STOREFRONT_ENV
-
 
 cat > "$APP_DIR/apps/admin/.env.production" <<ADMIN_ENV
 DATABASE_URL="$DB_URL"
@@ -111,7 +99,6 @@ GITHUB_SECRET="$GITHUB_SECRET"
 ADMIN_EMAIL="$ADMIN_EMAIL"
 ADMIN_ENV
 
-
 chown ec2-user:ec2-user \
   "$APP_DIR/apps/storefront/.env.production" \
   "$APP_DIR/apps/admin/.env.production"
@@ -120,11 +107,7 @@ chmod 600 \
   "$APP_DIR/apps/storefront/.env.production" \
   "$APP_DIR/apps/admin/.env.production"
 
-
-# ---------------------------------------------------------
-# Start PM2 fresh using CURRENT runtime secrets
-# ---------------------------------------------------------
-
+# Start PM2 fresh with current runtime secrets
 sudo -iu ec2-user bash <<'DEPLOY_SCRIPT'
 set -euo pipefail
 
@@ -133,15 +116,11 @@ export NVM_DIR="$HOME/.nvm"
 
 cd /home/ec2-user/E-commerce
 
-# Remove any stale PM2 processes or AMI-baked dump
+# Remove stale AMI-baked PM2 state
 pm2 delete all 2>/dev/null || true
 rm -f "$HOME/.pm2/dump.pm2"
 
-
-# ---------------------------------------------------------
 # Start storefront
-# ---------------------------------------------------------
-
 set -a
 source apps/storefront/.env.production
 set +a
@@ -150,11 +129,7 @@ pm2 start npm \
   --name mavencrest-storefront \
   -- run start:store
 
-
-# ---------------------------------------------------------
 # Start admin
-# ---------------------------------------------------------
-
 set -a
 source apps/admin/.env.production
 set +a
@@ -163,29 +138,21 @@ pm2 start npm \
   --name mavencrest-admin \
   -- run start:admin
 
-
-# Save CURRENT process state for reboot recovery
+# Save current process state for reboot recovery
 pm2 save --force
-
 DEPLOY_SCRIPT
 
-
-# ---------------------------------------------------------
-# Configure PM2 to automatically restore processes on reboot
-# ---------------------------------------------------------
-
+# Configure PM2 startup after reboot
 env PATH=/usr/local/bin:/usr/bin:/bin \
   /usr/lib/node_modules/pm2/bin/pm2 startup systemd \
   -u ec2-user \
   --hp /home/ec2-user
-
 
 echo "Mavencrest deployment completed successfully."
 
 USER_DATA
   )
 }
-
 
 resource "aws_autoscaling_group" "app_asg" {
   name             = "${var.project_name}-${var.environment}-asg"
@@ -202,7 +169,7 @@ resource "aws_autoscaling_group" "app_asg" {
 
   launch_template {
     id      = aws_launch_template.app_lt.id
-    version = "$Latest"
+    version = aws_launch_template.app_lt.latest_version
   }
 
   health_check_type         = "ELB"
@@ -215,9 +182,12 @@ resource "aws_autoscaling_group" "app_asg" {
       min_healthy_percentage = 50
       instance_warmup        = 300
     }
+
+    triggers = [
+      "launch_template"
+    ]
   }
 }
-
 
 resource "aws_autoscaling_policy" "cpu_tracking" {
   name                   = "${var.project_name}-${var.environment}-cpu-policy"
@@ -233,11 +203,9 @@ resource "aws_autoscaling_policy" "cpu_tracking" {
   }
 }
 
-
 data "aws_ssm_parameter" "mavencrest_ami" {
   name = "/mavencrest/prod/ami-id"
 }
-
 
 output "alb_dns_name" {
   value       = aws_lb.main.dns_name

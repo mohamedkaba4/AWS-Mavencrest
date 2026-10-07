@@ -1,0 +1,1959 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.8",
+  "serial": 94,
+  "lineage": "61a404f8-9219-1789-0a49-f97c19cdd4d4",
+  "outputs": {
+    "alb_dns_name": {
+      "value": "mavencrest-prod-alb-1157005893.us-east-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "cloudfront_url": {
+      "value": "d29yn8fo4aeqsz.cloudfront.net",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_route53_zone",
+      "name": "primary",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:route53:::hostedzone/Z0991765E7YY0D01LGNQ",
+            "caller_reference": "3c161cb8-f802-421a-9084-a472c029b232",
+            "comment": "",
+            "id": "Z0991765E7YY0D01LGNQ",
+            "linked_service_description": null,
+            "linked_service_principal": null,
+            "name": "mavencrest.site",
+            "name_servers": [
+              "ns-1423.awsdns-49.org",
+              "ns-1564.awsdns-03.co.uk",
+              "ns-1005.awsdns-61.net",
+              "ns-199.awsdns-24.com"
+            ],
+            "primary_name_server": "ns-1423.awsdns-49.org",
+            "private_zone": false,
+            "resource_record_set_count": 12,
+            "tags": {},
+            "vpc_id": null,
+            "zone_id": "Z0991765E7YY0D01LGNQ"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_ssm_parameter",
+      "name": "mavencrest_ami",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ssm:us-east-1:063899249655:parameter/mavencrest/prod/ami-id",
+            "id": "/mavencrest/prod/ami-id",
+            "insecure_value": "ami-0da3cc1ce182d580e",
+            "name": "/mavencrest/prod/ami-id",
+            "type": "String",
+            "value": "ami-0da3cc1ce182d580e",
+            "version": 38,
+            "with_decryption": true
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "value"
+              }
+            ]
+          ],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_subnets",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "filter": [
+              {
+                "name": "availability-zone",
+                "values": [
+                  "us-east-1a",
+                  "us-east-1b",
+                  "us-east-1c",
+                  "us-east-1d",
+                  "us-east-1f"
+                ]
+              },
+              {
+                "name": "vpc-id",
+                "values": [
+                  "vpc-05c520bd04e7d0952"
+                ]
+              }
+            ],
+            "id": "us-east-1",
+            "ids": [
+              "subnet-0ae277be95cf61c3a",
+              "subnet-03a169a4d7caf6b43",
+              "subnet-0cf4812ae7cb69b75",
+              "subnet-09ce5f37f36aadb47",
+              "subnet-0af1d484bd8ec3f91"
+            ],
+            "tags": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_vpc",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:vpc/vpc-05c520bd04e7d0952",
+            "cidr_block": "172.31.0.0/16",
+            "cidr_block_associations": [
+              {
+                "association_id": "vpc-cidr-assoc-01682cb2b58e6932b",
+                "cidr_block": "172.31.0.0/16",
+                "state": "associated"
+              }
+            ],
+            "default": true,
+            "dhcp_options_id": "dopt-01908d2f36ed7d92d",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "filter": null,
+            "id": "vpc-05c520bd04e7d0952",
+            "instance_tenancy": "default",
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "main_route_table_id": "rtb-0d215d537c331ae11",
+            "owner_id": "063899249655",
+            "state": null,
+            "tags": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "app_asg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:autoscaling:us-east-1:063899249655:autoScalingGroup:30f2c3fd-c6e8-4e20-b844-1e787331bac7:autoScalingGroupName/mavencrest-prod-asg",
+            "availability_zone_distribution": [
+              {
+                "capacity_distribution_strategy": "balanced-best-effort"
+              }
+            ],
+            "availability_zones": [
+              "us-east-1a",
+              "us-east-1b",
+              "us-east-1c",
+              "us-east-1d",
+              "us-east-1f"
+            ],
+            "capacity_rebalance": false,
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "default",
+                "capacity_reservation_target": []
+              }
+            ],
+            "context": "",
+            "default_cooldown": 300,
+            "default_instance_warmup": 0,
+            "desired_capacity": 1,
+            "desired_capacity_type": "",
+            "enabled_metrics": null,
+            "force_delete": false,
+            "force_delete_warm_pool": false,
+            "health_check_grace_period": 300,
+            "health_check_type": "ELB",
+            "id": "mavencrest-prod-asg",
+            "ignore_failed_scaling_activities": false,
+            "initial_lifecycle_hook": [],
+            "instance_maintenance_policy": [],
+            "instance_refresh": [
+              {
+                "preferences": [
+                  {
+                    "alarm_specification": [],
+                    "auto_rollback": false,
+                    "checkpoint_delay": "",
+                    "checkpoint_percentages": null,
+                    "instance_warmup": "300",
+                    "max_healthy_percentage": 100,
+                    "min_healthy_percentage": 50,
+                    "scale_in_protected_instances": "Ignore",
+                    "skip_matching": false,
+                    "standby_instances": "Ignore"
+                  }
+                ],
+                "strategy": "Rolling",
+                "triggers": [
+                  "launch_template"
+                ]
+              }
+            ],
+            "launch_configuration": "",
+            "launch_template": [
+              {
+                "id": "lt-0956ecd1179acde20",
+                "name": "mavencrest-prod-lt-20261005225542653700000003",
+                "version": "1"
+              }
+            ],
+            "load_balancers": [],
+            "max_instance_lifetime": 0,
+            "max_size": 3,
+            "metrics_granularity": "1Minute",
+            "min_elb_capacity": null,
+            "min_size": 1,
+            "mixed_instances_policy": [],
+            "name": "mavencrest-prod-asg",
+            "name_prefix": "",
+            "placement_group": "",
+            "predicted_capacity": 0,
+            "protect_from_scale_in": false,
+            "service_linked_role_arn": "arn:aws:iam::063899249655:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "suspended_processes": null,
+            "tag": [],
+            "target_group_arns": [
+              "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+              "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/17970379e400088c"
+            ],
+            "termination_policies": null,
+            "timeouts": null,
+            "traffic_source": [
+              {
+                "identifier": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+                "type": "elbv2"
+              },
+              {
+                "identifier": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/17970379e400088c",
+                "type": "elbv2"
+              }
+            ],
+            "vpc_zone_identifier": [
+              "subnet-03a169a4d7caf6b43",
+              "subnet-09ce5f37f36aadb47",
+              "subnet-0ae277be95cf61c3a",
+              "subnet-0af1d484bd8ec3f91",
+              "subnet-0cf4812ae7cb69b75"
+            ],
+            "wait_for_capacity_timeout": "10m",
+            "wait_for_elb_capacity": null,
+            "warm_pool": [],
+            "warm_pool_size": 0
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjo2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_iam_instance_profile.ec2_profile",
+            "aws_iam_role.app_ssm_role",
+            "aws_launch_template.app_lt",
+            "aws_lb_target_group.admin_tg",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.ec2_sg",
+            "data.aws_ssm_parameter.mavencrest_ami",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_autoscaling_policy",
+      "name": "cpu_tracking",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "adjustment_type": "",
+            "arn": "arn:aws:autoscaling:us-east-1:063899249655:scalingPolicy:b549ea49-e25c-421e-942a-d9c7a9149714:autoScalingGroupName/mavencrest-prod-asg:policyName/mavencrest-prod-cpu-policy",
+            "autoscaling_group_name": "mavencrest-prod-asg",
+            "cooldown": 0,
+            "enabled": true,
+            "estimated_instance_warmup": 0,
+            "id": "mavencrest-prod-cpu-policy",
+            "metric_aggregation_type": "",
+            "min_adjustment_magnitude": 0,
+            "name": "mavencrest-prod-cpu-policy",
+            "policy_type": "TargetTrackingScaling",
+            "predictive_scaling_configuration": [],
+            "scaling_adjustment": 0,
+            "step_adjustment": [],
+            "target_tracking_configuration": [
+              {
+                "customized_metric_specification": [],
+                "disable_scale_in": false,
+                "predefined_metric_specification": [
+                  {
+                    "predefined_metric_type": "ASGAverageCPUUtilization",
+                    "resource_label": ""
+                  }
+                ],
+                "target_value": 60
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_autoscaling_group.app_asg",
+            "aws_iam_instance_profile.ec2_profile",
+            "aws_iam_role.app_ssm_role",
+            "aws_launch_template.app_lt",
+            "aws_lb_target_group.admin_tg",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.ec2_sg",
+            "data.aws_ssm_parameter.mavencrest_ami",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudfront_distribution",
+      "name": "cdn",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "aliases": null,
+            "arn": "arn:aws:cloudfront::063899249655:distribution/E296ZRVZPVAMZH",
+            "caller_reference": "terraform-20261005225536607100000001",
+            "comment": "E-commerce Product Images CDN - prod",
+            "continuous_deployment_policy_id": "",
+            "custom_error_response": [],
+            "default_cache_behavior": [
+              {
+                "allowed_methods": [
+                  "GET",
+                  "HEAD"
+                ],
+                "cache_policy_id": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                "cached_methods": [
+                  "GET",
+                  "HEAD"
+                ],
+                "compress": false,
+                "default_ttl": 0,
+                "field_level_encryption_id": "",
+                "forwarded_values": [],
+                "function_association": [],
+                "grpc_config": [
+                  {
+                    "enabled": false
+                  }
+                ],
+                "lambda_function_association": [],
+                "max_ttl": 0,
+                "min_ttl": 0,
+                "origin_request_policy_id": "",
+                "realtime_log_config_arn": "",
+                "response_headers_policy_id": "",
+                "smooth_streaming": false,
+                "target_origin_id": "S3-EcommerceImages",
+                "trusted_key_groups": [],
+                "trusted_signers": [],
+                "viewer_protocol_policy": "redirect-to-https"
+              }
+            ],
+            "default_root_object": "",
+            "domain_name": "d29yn8fo4aeqsz.cloudfront.net",
+            "enabled": true,
+            "etag": "E23ZP02F085DFQ",
+            "hosted_zone_id": "Z2FDTNDATAQYW2",
+            "http_version": "http2",
+            "id": "E296ZRVZPVAMZH",
+            "in_progress_validation_batches": 0,
+            "is_ipv6_enabled": true,
+            "last_modified_time": "2026-10-05 22:55:36.809 +0000 UTC",
+            "logging_config": [],
+            "ordered_cache_behavior": [],
+            "origin": [
+              {
+                "connection_attempts": 3,
+                "connection_timeout": 10,
+                "custom_header": [],
+                "custom_origin_config": [],
+                "domain_name": "mohamedkaba-ecommerce-images-prod.s3.us-east-1.amazonaws.com",
+                "origin_access_control_id": "E29YRSHZ13TRDB",
+                "origin_id": "S3-EcommerceImages",
+                "origin_path": "",
+                "origin_shield": [],
+                "s3_origin_config": [],
+                "vpc_origin_config": []
+              }
+            ],
+            "origin_group": [],
+            "price_class": "PriceClass_All",
+            "restrictions": [
+              {
+                "geo_restriction": [
+                  {
+                    "locations": [],
+                    "restriction_type": "none"
+                  }
+                ]
+              }
+            ],
+            "retain_on_delete": false,
+            "staging": false,
+            "status": "Deployed",
+            "tags": {
+              "Environment": "prod"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "trusted_key_groups": [
+              {
+                "enabled": false,
+                "items": []
+              }
+            ],
+            "trusted_signers": [
+              {
+                "enabled": false,
+                "items": []
+              }
+            ],
+            "viewer_certificate": [
+              {
+                "acm_certificate_arn": "",
+                "cloudfront_default_certificate": true,
+                "iam_certificate_id": "",
+                "minimum_protocol_version": "TLSv1",
+                "ssl_support_method": ""
+              }
+            ],
+            "wait_for_deployment": true,
+            "web_acl_id": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "aws_cloudfront_origin_access_control.oac",
+            "aws_s3_bucket.images"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudfront_origin_access_control",
+      "name": "oac",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:cloudfront::063899249655:origin-access-control/E29YRSHZ13TRDB",
+            "description": "Secure OAC for private images S3 bucket",
+            "etag": "ETVPDKIKX0DER",
+            "id": "E29YRSHZ13TRDB",
+            "name": "mohamedkaba-ecommerce-images-prod-oac",
+            "origin_access_control_origin_type": "s3",
+            "signing_behavior": "always",
+            "signing_protocol": "sigv4"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "admin_unhealthy_targets",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "actions_enabled": true,
+            "alarm_actions": null,
+            "alarm_description": "Triggers when one or more admin targets are unhealthy",
+            "alarm_name": "mavencrest-prod-admin-unhealthy-targets",
+            "arn": "arn:aws:cloudwatch:us-east-1:063899249655:alarm:mavencrest-prod-admin-unhealthy-targets",
+            "comparison_operator": "GreaterThanThreshold",
+            "datapoints_to_alarm": 2,
+            "dimensions": {
+              "LoadBalancer": "app/mavencrest-prod-alb/c990dc175a8fcae9",
+              "TargetGroup": "targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1"
+            },
+            "evaluate_low_sample_count_percentiles": "",
+            "evaluation_periods": 2,
+            "extended_statistic": "",
+            "id": "mavencrest-prod-admin-unhealthy-targets",
+            "insufficient_data_actions": null,
+            "metric_name": "UnHealthyHostCount",
+            "metric_query": [],
+            "namespace": "AWS/ApplicationELB",
+            "ok_actions": null,
+            "period": 30,
+            "statistic": "Minimum",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "threshold": 0,
+            "threshold_metric_id": "",
+            "treat_missing_data": "notBreaching",
+            "unit": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_lb_target_group.admin_tg",
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "storefront_unhealthy_targets",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "actions_enabled": true,
+            "alarm_actions": null,
+            "alarm_description": "Triggers when one or more storefront targets are unhealthy",
+            "alarm_name": "mavencrest-prod-storefront-unhealthy-targets",
+            "arn": "arn:aws:cloudwatch:us-east-1:063899249655:alarm:mavencrest-prod-storefront-unhealthy-targets",
+            "comparison_operator": "GreaterThanThreshold",
+            "datapoints_to_alarm": 2,
+            "dimensions": {
+              "LoadBalancer": "app/mavencrest-prod-alb/c990dc175a8fcae9",
+              "TargetGroup": "targetgroup/mavencrest-prod-tg/17970379e400088c"
+            },
+            "evaluate_low_sample_count_percentiles": "",
+            "evaluation_periods": 2,
+            "extended_statistic": "",
+            "id": "mavencrest-prod-storefront-unhealthy-targets",
+            "insufficient_data_actions": null,
+            "metric_name": "UnHealthyHostCount",
+            "metric_query": [],
+            "namespace": "AWS/ApplicationELB",
+            "ok_actions": null,
+            "period": 30,
+            "statistic": "Minimum",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "threshold": 0,
+            "threshold_metric_id": "",
+            "treat_missing_data": "notBreaching",
+            "unit": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "ec2_profile",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::063899249655:instance-profile/nextjs-ec2-profile-prod",
+            "create_date": "2026-10-05T22:55:36Z",
+            "id": "nextjs-ec2-profile-prod",
+            "name": "nextjs-ec2-profile-prod",
+            "name_prefix": "",
+            "path": "/",
+            "role": "mavencrest-prod-ec2-role",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "unique_id": "AIPAQ5YFRFP3UXYGW2NBO"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_role.app_ssm_role"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "app_ssm_policy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::063899249655:policy/mavencrest-prod-ssm-read",
+            "attachment_count": 0,
+            "description": "Allows EC2 instances to read the Neon DB connection string and other secrets from Parameter Store",
+            "id": "arn:aws:iam::063899249655:policy/mavencrest-prod-ssm-read",
+            "name": "mavencrest-prod-ssm-read",
+            "name_prefix": "",
+            "path": "/",
+            "policy": "{\"Statement\":[{\"Action\":[\"ssm:GetParameter\",\"ssm:GetParameters\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:ssm:us-east-1:*:parameter/nextjs/prod/*\"}],\"Version\":\"2012-10-17\"}",
+            "policy_id": "ANPAQ5YFRFP3UN23G5FY6",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "app_ssm_role",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::063899249655:role/mavencrest-prod-ec2-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-10-05T22:55:36Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "mavencrest-prod-ec2-role",
+            "inline_policy": [],
+            "managed_policy_arns": [],
+            "max_session_duration": 3600,
+            "name": "mavencrest-prod-ec2-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "unique_id": "AROAQ5YFRFP3XZMHTXZWI"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "app_ssm_attach",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "mavencrest-prod-ec2-role-20261005225536830100000002",
+            "policy_arn": "arn:aws:iam::063899249655:policy/mavencrest-prod-ssm-read",
+            "role": "mavencrest-prod-ec2-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_policy.app_ssm_policy",
+            "aws_iam_role.app_ssm_role"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "app_lt",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:launch-template/lt-0956ecd1179acde20",
+            "block_device_mappings": [],
+            "capacity_reservation_specification": [],
+            "cpu_options": [],
+            "credit_specification": [],
+            "default_version": 1,
+            "description": "",
+            "disable_api_stop": false,
+            "disable_api_termination": false,
+            "ebs_optimized": "",
+            "elastic_gpu_specifications": [],
+            "elastic_inference_accelerator": [],
+            "enclave_options": [],
+            "hibernation_options": [],
+            "iam_instance_profile": [
+              {
+                "arn": "",
+                "name": "nextjs-ec2-profile-prod"
+              }
+            ],
+            "id": "lt-0956ecd1179acde20",
+            "image_id": "ami-0da3cc1ce182d580e",
+            "instance_initiated_shutdown_behavior": "",
+            "instance_market_options": [],
+            "instance_requirements": [],
+            "instance_type": "t3.small",
+            "kernel_id": "",
+            "key_name": "",
+            "latest_version": 1,
+            "license_specification": [],
+            "maintenance_options": [],
+            "metadata_options": [],
+            "monitoring": [],
+            "name": "mavencrest-prod-lt-20261005225542653700000003",
+            "name_prefix": "mavencrest-prod-lt-",
+            "network_interfaces": [
+              {
+                "associate_carrier_ip_address": "",
+                "associate_public_ip_address": "true",
+                "connection_tracking_specification": [],
+                "delete_on_termination": "",
+                "description": "",
+                "device_index": 0,
+                "ena_srd_specification": [],
+                "interface_type": "",
+                "ipv4_address_count": 0,
+                "ipv4_addresses": null,
+                "ipv4_prefix_count": 0,
+                "ipv4_prefixes": null,
+                "ipv6_address_count": 0,
+                "ipv6_addresses": null,
+                "ipv6_prefix_count": 0,
+                "ipv6_prefixes": null,
+                "network_card_index": 0,
+                "network_interface_id": "",
+                "primary_ipv6": "",
+                "private_ip_address": "",
+                "security_groups": [
+                  "sg-0e292f3b95a96bd66"
+                ],
+                "subnet_id": ""
+              }
+            ],
+            "placement": [],
+            "private_dns_name_options": [],
+            "ram_disk_id": "",
+            "security_group_names": null,
+            "tag_specifications": [],
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "update_default_version": null,
+            "user_data": "IyEvYmluL2Jhc2gKc2V0IC1ldW8gcGlwZWZhaWwKCmV4ZWMgPiA+KHRlZSAvdmFyL2xvZy9tYXZlbmNyZXN0LXVzZXItZGF0YS5sb2cgfCBsb2dnZXIgLXQgdXNlci1kYXRhIC1zIDI+L2Rldi9jb25zb2xlKSAyPiYxCgpBUFBfRElSPSIvaG9tZS9lYzItdXNlci9FLWNvbW1lcmNlIgpBV1NfUkVHSU9OPSJ1cy1lYXN0LTEiCgojIFN0YXJ0IE5naW54CnN5c3RlbWN0bCBlbmFibGUgbmdpbngKc3lzdGVtY3RsIHN0YXJ0IG5naW54CgojIFJldHJpZXZlIHJ1bnRpbWUgc2VjcmV0cyBmcm9tIFNTTSBQYXJhbWV0ZXIgU3RvcmUKREJfVVJMPSQoYXdzIHNzbSBnZXQtcGFyYW1ldGVyIFwKICAtLW5hbWUgIi9uZXh0anMvcHJvZC9EQVRBQkFTRV9VUkwiIFwKICAtLXdpdGgtZGVjcnlwdGlvbiBcCiAgLS1xdWVyeSAiUGFyYW1ldGVyLlZhbHVlIiBcCiAgLS1vdXRwdXQgdGV4dCBcCiAgLS1yZWdpb24gIiRBV1NfUkVHSU9OIikKCk5FWFRBVVRIX1NFQ1JFVD0kKGF3cyBzc20gZ2V0LXBhcmFtZXRlciBcCiAgLS1uYW1lICIvbmV4dGpzL3Byb2QvTkVYVEFVVEhfU0VDUkVUIiBcCiAgLS13aXRoLWRlY3J5cHRpb24gXAogIC0tcXVlcnkgIlBhcmFtZXRlci5WYWx1ZSIgXAogIC0tb3V0cHV0IHRleHQgXAogIC0tcmVnaW9uICIkQVdTX1JFR0lPTiIpCgpHT09HTEVfQ0xJRU5UX0lEPSQoYXdzIHNzbSBnZXQtcGFyYW1ldGVyIFwKICAtLW5hbWUgIi9uZXh0anMvcHJvZC9HT09HTEVfQ0xJRU5UX0lEIiBcCiAgLS13aXRoLWRlY3J5cHRpb24gXAogIC0tcXVlcnkgIlBhcmFtZXRlci5WYWx1ZSIgXAogIC0tb3V0cHV0IHRleHQgXAogIC0tcmVnaW9uICIkQVdTX1JFR0lPTiIpCgpHT09HTEVfQ0xJRU5UX1NFQ1JFVD0kKGF3cyBzc20gZ2V0LXBhcmFtZXRlciBcCiAgLS1uYW1lICIvbmV4dGpzL3Byb2QvR09PR0xFX0NMSUVOVF9TRUNSRVQiIFwKICAtLXdpdGgtZGVjcnlwdGlvbiBcCiAgLS1xdWVyeSAiUGFyYW1ldGVyLlZhbHVlIiBcCiAgLS1vdXRwdXQgdGV4dCBcCiAgLS1yZWdpb24gIiRBV1NfUkVHSU9OIikKCkdJVEhVQl9JRD0kKGF3cyBzc20gZ2V0LXBhcmFtZXRlciBcCiAgLS1uYW1lICIvbmV4dGpzL3Byb2QvR0lUSFVCX0lEIiBcCiAgLS13aXRoLWRlY3J5cHRpb24gXAogIC0tcXVlcnkgIlBhcmFtZXRlci5WYWx1ZSIgXAogIC0tb3V0cHV0IHRleHQgXAogIC0tcmVnaW9uICIkQVdTX1JFR0lPTiIpCgpHSVRIVUJfU0VDUkVUPSQoYXdzIHNzbSBnZXQtcGFyYW1ldGVyIFwKICAtLW5hbWUgIi9uZXh0anMvcHJvZC9HSVRIVUJfU0VDUkVUIiBcCiAgLS13aXRoLWRlY3J5cHRpb24gXAogIC0tcXVlcnkgIlBhcmFtZXRlci5WYWx1ZSIgXAogIC0tb3V0cHV0IHRleHQgXAogIC0tcmVnaW9uICIkQVdTX1JFR0lPTiIpCgpBRE1JTl9FTUFJTD0kKGF3cyBzc20gZ2V0LXBhcmFtZXRlciBcCiAgLS1uYW1lICIvbmV4dGpzL3Byb2QvQURNSU5fRU1BSUwiIFwKICAtLXdpdGgtZGVjcnlwdGlvbiBcCiAgLS1xdWVyeSAiUGFyYW1ldGVyLlZhbHVlIiBcCiAgLS1vdXRwdXQgdGV4dCBcCiAgLS1yZWdpb24gIiRBV1NfUkVHSU9OIikKCiMgV3JpdGUgcnVudGltZSBlbnZpcm9ubWVudCBmaWxlcwpjYXQgPiAiJEFQUF9ESVIvYXBwcy9zdG9yZWZyb250Ly5lbnYucHJvZHVjdGlvbiIgPDxTVE9SRUZST05UX0VOVgpEQVRBQkFTRV9VUkw9IiREQl9VUkwiCk5PREVfRU5WPSJwcm9kdWN0aW9uIgpORVhUQVVUSF9VUkw9Imh0dHBzOi8vc3RvcmUubWF2ZW5jcmVzdC5zaXRlIgpORVhUQVVUSF9TRUNSRVQ9IiRORVhUQVVUSF9TRUNSRVQiCkdPT0dMRV9DTElFTlRfSUQ9IiRHT09HTEVfQ0xJRU5UX0lEIgpHT09HTEVfQ0xJRU5UX1NFQ1JFVD0iJEdPT0dMRV9DTElFTlRfU0VDUkVUIgpHSVRIVUJfSUQ9IiRHSVRIVUJfSUQiCkdJVEhVQl9TRUNSRVQ9IiRHSVRIVUJfU0VDUkVUIgpTVE9SRUZST05UX0VOVgoKY2F0ID4gIiRBUFBfRElSL2FwcHMvYWRtaW4vLmVudi5wcm9kdWN0aW9uIiA8PEFETUlOX0VOVgpEQVRBQkFTRV9VUkw9IiREQl9VUkwiCk5PREVfRU5WPSJwcm9kdWN0aW9uIgpORVhUQVVUSF9VUkw9Imh0dHBzOi8vYWRtaW4ubWF2ZW5jcmVzdC5zaXRlIgpORVhUQVVUSF9TRUNSRVQ9IiRORVhUQVVUSF9TRUNSRVQiCkdPT0dMRV9DTElFTlRfSUQ9IiRHT09HTEVfQ0xJRU5UX0lEIgpHT09HTEVfQ0xJRU5UX1NFQ1JFVD0iJEdPT0dMRV9DTElFTlRfU0VDUkVUIgpHSVRIVUJfSUQ9IiRHSVRIVUJfSUQiCkdJVEhVQl9TRUNSRVQ9IiRHSVRIVUJfU0VDUkVUIgpBRE1JTl9FTUFJTD0iJEFETUlOX0VNQUlMIgpBRE1JTl9FTlYKCmNob3duIGVjMi11c2VyOmVjMi11c2VyIFwKICAiJEFQUF9ESVIvYXBwcy9zdG9yZWZyb250Ly5lbnYucHJvZHVjdGlvbiIgXAogICIkQVBQX0RJUi9hcHBzL2FkbWluLy5lbnYucHJvZHVjdGlvbiIKCmNobW9kIDYwMCBcCiAgIiRBUFBfRElSL2FwcHMvc3RvcmVmcm9udC8uZW52LnByb2R1Y3Rpb24iIFwKICAiJEFQUF9ESVIvYXBwcy9hZG1pbi8uZW52LnByb2R1Y3Rpb24iCgojIFN0YXJ0IFBNMiBmcmVzaCB3aXRoIGN1cnJlbnQgcnVudGltZSBzZWNyZXRzCnN1ZG8gLWl1IGVjMi11c2VyIGJhc2ggPDwnREVQTE9ZX1NDUklQVCcKc2V0IC1ldW8gcGlwZWZhaWwKCmV4cG9ydCBOVk1fRElSPSIkSE9NRS8ubnZtIgpbIC1zICIkTlZNX0RJUi9udm0uc2giIF0gJiYgc291cmNlICIkTlZNX0RJUi9udm0uc2giCgpjZCAvaG9tZS9lYzItdXNlci9FLWNvbW1lcmNlCgojIFJlbW92ZSBzdGFsZSBBTUktYmFrZWQgUE0yIHN0YXRlCnBtMiBkZWxldGUgYWxsIDI+L2Rldi9udWxsIHx8IHRydWUKcm0gLWYgIiRIT01FLy5wbTIvZHVtcC5wbTIiCgojIFN0YXJ0IHN0b3JlZnJvbnQKc2V0IC1hCnNvdXJjZSBhcHBzL3N0b3JlZnJvbnQvLmVudi5wcm9kdWN0aW9uCnNldCArYQoKcG0yIHN0YXJ0IG5wbSBcCiAgLS1uYW1lIG1hdmVuY3Jlc3Qtc3RvcmVmcm9udCBcCiAgLS0gcnVuIHN0YXJ0OnN0b3JlCgojIFN0YXJ0IGFkbWluCnNldCAtYQpzb3VyY2UgYXBwcy9hZG1pbi8uZW52LnByb2R1Y3Rpb24Kc2V0ICthCgpwbTIgc3RhcnQgbnBtIFwKICAtLW5hbWUgbWF2ZW5jcmVzdC1hZG1pbiBcCiAgLS0gcnVuIHN0YXJ0OmFkbWluCgojIFNhdmUgY3VycmVudCBwcm9jZXNzIHN0YXRlIGZvciByZWJvb3QgcmVjb3ZlcnkKcG0yIHNhdmUgLS1mb3JjZQpERVBMT1lfU0NSSVBUCgojIENvbmZpZ3VyZSBQTTIgc3RhcnR1cCBhZnRlciByZWJvb3QKZW52IFBBVEg9L3Vzci9sb2NhbC9iaW46L3Vzci9iaW46L2JpbiBcCiAgL3Vzci9saWIvbm9kZV9tb2R1bGVzL3BtMi9iaW4vcG0yIHN0YXJ0dXAgc3lzdGVtZCBcCiAgLXUgZWMyLXVzZXIgXAogIC0taHAgL2hvbWUvZWMyLXVzZXIKCmVjaG8gIk1hdmVuY3Jlc3QgZGVwbG95bWVudCBjb21wbGV0ZWQgc3VjY2Vzc2Z1bGx5LiIKCg==",
+            "vpc_security_group_ids": null
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "image_id"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_iam_instance_profile.ec2_profile",
+            "aws_iam_role.app_ssm_role",
+            "aws_security_group.ec2_sg",
+            "data.aws_ssm_parameter.mavencrest_ami",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:loadbalancer/app/mavencrest-prod-alb/c990dc175a8fcae9",
+            "arn_suffix": "app/mavencrest-prod-alb/c990dc175a8fcae9",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "mavencrest-prod-alb-1157005893.us-east-1.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:loadbalancer/app/mavencrest-prod-alb/c990dc175a8fcae9",
+            "idle_timeout": 60,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "mavencrest-prod-alb",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-0c858798a5a494832"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-03a169a4d7caf6b43"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-09ce5f37f36aadb47"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0ae277be95cf61c3a"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0af1d484bd8ec3f91"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0cf4812ae7cb69b75"
+              }
+            ],
+            "subnets": [
+              "subnet-03a169a4d7caf6b43",
+              "subnet-09ce5f37f36aadb47",
+              "subnet-0ae277be95cf61c3a",
+              "subnet-0af1d484bd8ec3f91",
+              "subnet-0cf4812ae7cb69b75"
+            ],
+            "tags": {
+              "Domain": "store.mavencrest.site",
+              "Environment": "prod"
+            },
+            "tags_all": {
+              "Domain": "store.mavencrest.site",
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-05c520bd04e7d0952",
+            "xff_header_processing_mode": "append",
+            "zone_id": "Z35SXDOTRQ7X7K"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "http_redirect",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener/app/mavencrest-prod-alb/c990dc175a8fcae9/c12c0c96f4fbac25",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [
+                  {
+                    "host": "#{host}",
+                    "path": "/#{path}",
+                    "port": "443",
+                    "protocol": "HTTPS",
+                    "query": "#{query}",
+                    "status_code": "HTTP_301"
+                  }
+                ],
+                "target_group_arn": "",
+                "type": "redirect"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener/app/mavencrest-prod-alb/c990dc175a8fcae9/c12c0c96f4fbac25",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:loadbalancer/app/mavencrest-prod-alb/c990dc175a8fcae9",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "https",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener/app/mavencrest-prod-alb/c990dc175a8fcae9/a5a20c311f9b6a13",
+            "certificate_arn": "arn:aws:acm:us-east-1:063899249655:certificate/960f64f6-cf6a-4df7-9fee-29e650b2ddbe",
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/17970379e400088c",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener/app/mavencrest-prod-alb/c990dc175a8fcae9/a5a20c311f9b6a13",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:loadbalancer/app/mavencrest-prod-alb/c990dc175a8fcae9",
+            "mutual_authentication": [
+              {
+                "advertise_trust_store_ca_names": "",
+                "ignore_client_certificate_expiry": false,
+                "mode": "off",
+                "trust_store_arn": ""
+              }
+            ],
+            "port": 443,
+            "protocol": "HTTPS",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": "",
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": "",
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": "",
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": "",
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": "",
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": "",
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": "",
+            "routing_http_request_x_amzn_tls_version_header_name": "",
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "ELBSecurityPolicy-2016-08",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_listener_rule",
+      "name": "admin_host",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+                "type": "forward"
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener-rule/app/mavencrest-prod-alb/c990dc175a8fcae9/a5a20c311f9b6a13/946b99450a90a0a4",
+            "condition": [
+              {
+                "host_header": [
+                  {
+                    "values": [
+                      "admin.mavencrest.site"
+                    ]
+                  }
+                ],
+                "http_header": [],
+                "http_request_method": [],
+                "path_pattern": [],
+                "query_string": [],
+                "source_ip": []
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener-rule/app/mavencrest-prod-alb/c990dc175a8fcae9/a5a20c311f9b6a13/946b99450a90a0a4",
+            "listener_arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:listener/app/mavencrest-prod-alb/c990dc175a8fcae9/a5a20c311f9b6a13",
+            "priority": 100,
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_lb_listener.https",
+            "aws_lb_target_group.admin_tg",
+            "aws_lb_target_group.app_tg",
+            "aws_security_group.alb_sg",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "admin_tg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+            "arn_suffix": "targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200-399",
+                "path": "/",
+                "port": "3001",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-admin-tg/5a07a28b016893d1",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "mavencrest-prod-admin-tg",
+            "name_prefix": "",
+            "port": 3001,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-admin-tg"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Name": "mavencrest-prod-admin-tg",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "app_tg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/17970379e400088c",
+            "arn_suffix": "targetgroup/mavencrest-prod-tg/17970379e400088c",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200-399",
+                "path": "/",
+                "port": "80",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:063899249655:targetgroup/mavencrest-prod-tg/17970379e400088c",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "mavencrest-prod-tg",
+            "name_prefix": "",
+            "port": 80,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "admin",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "alias": [
+              {
+                "evaluate_target_health": true,
+                "name": "mavencrest-prod-alb-1157005893.us-east-1.elb.amazonaws.com",
+                "zone_id": "Z35SXDOTRQ7X7K"
+              }
+            ],
+            "allow_overwrite": null,
+            "cidr_routing_policy": [],
+            "failover_routing_policy": [],
+            "fqdn": "admin.mavencrest.site",
+            "geolocation_routing_policy": [],
+            "geoproximity_routing_policy": [],
+            "health_check_id": "",
+            "id": "Z0991765E7YY0D01LGNQ_admin.mavencrest.site_A",
+            "latency_routing_policy": [],
+            "multivalue_answer_routing_policy": false,
+            "name": "admin.mavencrest.site",
+            "records": null,
+            "set_identifier": "",
+            "timeouts": null,
+            "ttl": 0,
+            "type": "A",
+            "weighted_routing_policy": [],
+            "zone_id": "Z0991765E7YY0D01LGNQ"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInVwZGF0ZSI6MTgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_security_group.alb_sg",
+            "data.aws_route53_zone.primary",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route53_record",
+      "name": "store",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "alias": [
+              {
+                "evaluate_target_health": true,
+                "name": "mavencrest-prod-alb-1157005893.us-east-1.elb.amazonaws.com",
+                "zone_id": "Z35SXDOTRQ7X7K"
+              }
+            ],
+            "allow_overwrite": null,
+            "cidr_routing_policy": [],
+            "failover_routing_policy": [],
+            "fqdn": "store.mavencrest.site",
+            "geolocation_routing_policy": [],
+            "geoproximity_routing_policy": [],
+            "health_check_id": "",
+            "id": "Z0991765E7YY0D01LGNQ_store.mavencrest.site_A",
+            "latency_routing_policy": [],
+            "multivalue_answer_routing_policy": false,
+            "name": "store.mavencrest.site",
+            "records": null,
+            "set_identifier": "",
+            "timeouts": null,
+            "ttl": 0,
+            "type": "A",
+            "weighted_routing_policy": [],
+            "zone_id": "Z0991765E7YY0D01LGNQ"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInVwZGF0ZSI6MTgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_security_group.alb_sg",
+            "data.aws_route53_zone.primary",
+            "data.aws_subnets.default",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "images",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::mohamedkaba-ecommerce-images-prod",
+            "bucket": "mohamedkaba-ecommerce-images-prod",
+            "bucket_domain_name": "mohamedkaba-ecommerce-images-prod.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "mohamedkaba-ecommerce-images-prod.s3.us-east-1.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": false,
+            "grant": [
+              {
+                "id": "94d96e75abf888de97beba2f7e1711394ee01bc26241f8e9837eda8550382ab3",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3AQBSTGFYJSTF",
+            "id": "mohamedkaba-ecommerce-images-prod",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "",
+            "region": "us-east-1",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19"
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket_policy",
+      "name": "allow_cloudfront",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket": "mohamedkaba-ecommerce-images-prod",
+            "id": "mohamedkaba-ecommerce-images-prod",
+            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Condition\":{\"StringEquals\":{\"AWS:SourceArn\":\"arn:aws:cloudfront::063899249655:distribution/E296ZRVZPVAMZH\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"},\"Resource\":\"arn:aws:s3:::mohamedkaba-ecommerce-images-prod/*\",\"Sid\":\"AllowCloudFrontServicePrincipal\"}],\"Version\":\"2012-10-17\"}"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_cloudfront_distribution.cdn",
+            "aws_cloudfront_origin_access_control.oac",
+            "aws_s3_bucket.images"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "images",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": true,
+            "block_public_policy": true,
+            "bucket": "mohamedkaba-ecommerce-images-prod",
+            "id": "mohamedkaba-ecommerce-images-prod",
+            "ignore_public_acls": true,
+            "restrict_public_buckets": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_s3_bucket.images"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb_sg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group/sg-0c858798a5a494832",
+            "description": "Allow inbound public HTTP and HTTPS traffic to ALB",
+            "egress": [],
+            "id": "sg-0c858798a5a494832",
+            "ingress": [],
+            "name": "mavencrest-prod-alb-sg",
+            "name_prefix": "",
+            "owner_id": "063899249655",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-alb-sg"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Name": "mavencrest-prod-alb-sg",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "ec2_sg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group/sg-0e292f3b95a96bd66",
+            "description": "Allow inbound web traffic from ALB and SSH debugging",
+            "egress": [],
+            "id": "sg-0e292f3b95a96bd66",
+            "ingress": [],
+            "name": "mavencrest-prod-ec2-sg",
+            "name_prefix": "",
+            "owner_id": "063899249655",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "prod",
+              "Name": "mavencrest-prod-ec2-sg"
+            },
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Name": "mavencrest-prod-ec2-sg",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-05c520bd04e7d0952"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_egress_rule",
+      "name": "alb_all_outbound",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-08cb6cab232014a57",
+            "cidr_ipv4": "0.0.0.0/0",
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": null,
+            "id": "sgr-08cb6cab232014a57",
+            "ip_protocol": "-1",
+            "prefix_list_id": null,
+            "referenced_security_group_id": null,
+            "security_group_id": "sg-0c858798a5a494832",
+            "security_group_rule_id": "sgr-08cb6cab232014a57",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_egress_rule",
+      "name": "ec2_all_outbound",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-035334f1a85c94294",
+            "cidr_ipv4": "0.0.0.0/0",
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": null,
+            "id": "sgr-035334f1a85c94294",
+            "ip_protocol": "-1",
+            "prefix_list_id": null,
+            "referenced_security_group_id": null,
+            "security_group_id": "sg-0e292f3b95a96bd66",
+            "security_group_rule_id": "sgr-035334f1a85c94294",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.ec2_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "name": "admin_from_alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-0ee8cd2ee631b6949",
+            "cidr_ipv4": null,
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": 3001,
+            "id": "sgr-0ee8cd2ee631b6949",
+            "ip_protocol": "tcp",
+            "prefix_list_id": null,
+            "referenced_security_group_id": "sg-0c858798a5a494832",
+            "security_group_id": "sg-0e292f3b95a96bd66",
+            "security_group_rule_id": "sgr-0ee8cd2ee631b6949",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": 3001
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "aws_security_group.ec2_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "name": "alb_https",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-0d1fbf2349e3bcce7",
+            "cidr_ipv4": "0.0.0.0/0",
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": 443,
+            "id": "sgr-0d1fbf2349e3bcce7",
+            "ip_protocol": "tcp",
+            "prefix_list_id": null,
+            "referenced_security_group_id": null,
+            "security_group_id": "sg-0c858798a5a494832",
+            "security_group_rule_id": "sgr-0d1fbf2349e3bcce7",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": 443
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "name": "ssh_from_alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-06799b0368c0e5dc3",
+            "cidr_ipv4": "0.0.0.0/0",
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": 22,
+            "id": "sgr-06799b0368c0e5dc3",
+            "ip_protocol": "tcp",
+            "prefix_list_id": null,
+            "referenced_security_group_id": null,
+            "security_group_id": "sg-0e292f3b95a96bd66",
+            "security_group_rule_id": "sgr-06799b0368c0e5dc3",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": 22
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.ec2_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "name": "store_from_alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:063899249655:security-group-rule/sgr-0370f4102026ceaf9",
+            "cidr_ipv4": null,
+            "cidr_ipv6": null,
+            "description": null,
+            "from_port": 3000,
+            "id": "sgr-0370f4102026ceaf9",
+            "ip_protocol": "tcp",
+            "prefix_list_id": null,
+            "referenced_security_group_id": "sg-0c858798a5a494832",
+            "security_group_id": "sg-0e292f3b95a96bd66",
+            "security_group_rule_id": "sgr-0370f4102026ceaf9",
+            "tags": null,
+            "tags_all": {
+              "Environment": "prod",
+              "ManagedBy": "Terraform",
+              "Owner": "Mo",
+              "Project": "mavencrest-store",
+              "Repository": "aws-mavencrest"
+            },
+            "to_port": 3000
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "aws_security_group.alb_sg",
+            "aws_security_group.ec2_sg",
+            "data.aws_vpc.default"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
+
