@@ -198,4 +198,4 @@ The Auto Scaling Group maintains the desired application capacity and replaces u
 
 This repository contains the **AWS infrastructure and deployment architecture** for the Mavencrest E-Commerce platform.
 
-The Storefront, Admin Portal, Prisma database layer, and application code are maintained separately in the E-Commerce application repository.
+The Storefront, Admin Portal, Prisma database layer, and application code are maintained separately in the E-Commerce application repository. This deployment is active only when I'm working in the environment; Terraform deletes the resources to save costs.
